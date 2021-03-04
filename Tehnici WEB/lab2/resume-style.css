@@ -1,0 +1,140 @@
+.title 
+{
+    font-family: 'Lato';
+    margin: 0;
+    font-size: 38px;
+    font-weight: 900;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.subtitle
+{
+    color: #999;
+    margin-bottom: 1em;
+    font-family:'Lato';
+    font-size: 1.5em;
+    line-height: 1em;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.menu
+{
+   border-width: 990px;
+   margin-top: 80px;
+   margin-right: auto;
+   margin-bottom: 0;
+   margin-left: auto;
+   text-align: center;
+}
+
+
+.menu-item
+{
+    display:inline-block;
+    margin-right: 10px;
+    margin-left: 20px;
+    padding-top: 10px;
+    padding-right: 40px;
+    padding-bottom: 10px;
+    padding-left: 40px;
+    background-color: white;
+    text-decoration: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    font-family: 'Lato';
+    font-size: 14px;
+    color: #999;
+    vertical-align: baseline;
+}
+.menu-item menu-item-active
+{
+    position: relative;
+    bottom: -1px;
+    color: #c0392b;
+    padding-top: 15px;
+    padding-right: 40px;
+    padding-bottom: 15px;
+    padding-left: 40px;
+    margin-top: 0;
+}
+
+hr
+{
+    margin-top: 25px;
+    margin-bottom: 25px;
+    border:1px;
+    border-style: solid;
+    border-color: #f1f1f1;
+}
+.resume-title
+{
+    font-family: 'Open Sans';
+    font-size: 36px;
+    font-weight: 700;
+    color:#555;
+    margin-top: 60px;
+    margin-bottom: 25px;
+}
+.resume-subtitle
+{
+    font-family: 'Open Sans';
+    font-size: 21px;
+    font-weight: 700;
+    color:#555;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.resume-date{
+    color:#f1f1f1;
+    border-radius:15px;
+    background-color:#5BC0DE;
+    padding:2px;
+    margin-top:-50px;
+    margin-right:50px;
+    text-align:center;
+    font-family:'Lato';
+    font-size:12px;
+    font-weight:700;
+    display:inline;
+    float:right;
+}
+
+.resume-content p
+{
+    font-family: 'Lato';
+    font-size:16px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.resume-aside h2
+{
+    font-family: 'Open Sans';
+    font-size: 36px;
+    margin-top: 60px;
+    margin-bottom: 25px;
+    font-weight:700;
+}
+
+
+.resume-aside h3
+{
+    font-family: 'Open Sans';
+    font-size: 21px;
+    margin-top: 25px;
+    margin-bottom: 25px;
+    font-weight:700;
+}
+
+
+.skills-item
+{
+    font-family: 'Lato';
+    font-size: 12px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    font-weight:700;
+}   

@@ -1,0 +1,31 @@
+* {
+    box-sizing: border-box;
+}
+
+html {
+    font-family: 'Open Sans', sans-serif;
+    color: #555;
+}
+
+body {
+    background: url('https://raw.githubusercontent.com/WebToLearn/personal-page-css-workshop/master/img/background.jpg');
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-position: center center;
+    background-size: cover;
+}
+
+.header {
+    margin-top: 30px;
+}
+
+.resume-container {
+  background: white;
+  width: 990px;
+  margin: 0 auto 30px auto;
+  padding: 30px 20px;
+  border: 1px solid #f1f1f1;
+  box-shadow: 0px 6px #c0392b;
+  border-radius: 0px 0px 4px 4px;
+  display: flex;
+}
