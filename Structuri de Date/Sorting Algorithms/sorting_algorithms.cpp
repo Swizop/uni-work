@@ -1,9 +1,3 @@
-/*
-11
-100 100000000000
-58552019 26480774 
-100000000  100
-*/
 #include <iostream>
 #include <algorithm>
 #include <ctime>
