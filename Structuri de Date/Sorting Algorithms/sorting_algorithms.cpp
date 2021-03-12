@@ -51,10 +51,11 @@ void gen(int g, long long* p)
         case 4:                         //pseudo-random values
             cout<<"Vector random. ";
             for(i = 0; i < N; i++)
-                p[i] = rand() % Maxi + 1;
+                p[i] = generator() % Maxi + 1;
             break;
     }
 }
+
 
 
 void init_copy(long long* p, long long* pcopy)
@@ -79,6 +80,8 @@ bool is_sorted(long long *p)
             return false;
     return true;
 }
+
+
 int main()
 {
     ifstream f("input.txt");
@@ -87,12 +90,11 @@ int main()
     long long* pcopy;
     f>>Tests;
 
-    for (t = 1; t <= Tests; t++)
+ for (t = 1; t <= Tests; t++)
     {
         f>>N>>Maxi;                     //generate array
         p = new long long[N];        
-        srand(time(0));
-        g = rand() % 4 + 1; 
+        g = generator() % 4 + 1; 
         cout<<"N = "<<N<<" Maxi = "<<Maxi<<endl;
         gen(g, p);
         cout<<"First value in generated array: "<<p[0]<<endl;
@@ -122,7 +124,7 @@ int main()
             cout<<"Sortare corecta."<<endl<<"Pentru simple merge sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
             cout<<"Sortare incorecta!"<<endl;
-
+        
 
         init_copy(p, pcopy);            //in-place merge sort
         inceput = high_resolution_clock::now();
@@ -136,6 +138,8 @@ int main()
             cout<<"Sortare incorecta!"<<endl;
         
 
+        
+
         init_copy(p, pcopy);            //bubble sort
         inceput = high_resolution_clock::now();
         bubble(pcopy);
@@ -146,6 +150,8 @@ int main()
             cout<<"Sortare corecta."<<endl<<"Pentru bubble sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
             cout<<"Sortare incorecta!"<<endl;
+        
+
         
 
         init_copy(p, pcopy);            //radix sort
@@ -172,17 +178,7 @@ int main()
             cout<<"Sortare incorecta!"<<endl;
 
 
-        init_copy(p, pcopy);            //shell sort with gap N / (2 ^ k)
-        inceput = high_resolution_clock::now();
-        shells(pcopy);
-        final = high_resolution_clock::now();
-        elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
-        //write_array(pcopy);
-        if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru shell sort cu gap-ul N / (2 ^ k), a durat: "<<elapsed_time<<" millisecunde."<<endl;
-        else
-            cout<<"Sortare incorecta!"<<endl;
-
+        
 
         init_copy(p, pcopy);            //shell sort with gap (3 ^ k - 1) / 2
         inceput = high_resolution_clock::now();
@@ -195,10 +191,21 @@ int main()
         else
             cout<<"Sortare incorecta!"<<endl;    
 
-        cout<<endl;
-        delete[] p;
-    }
+        
+        init_copy(p, pcopy);            //shell sort with gap N / (2 ^ k)
+        inceput = high_resolution_clock::now();
+        shells(pcopy);
+        final = high_resolution_clock::now();
+        elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
+        //write_array(pcopy);
+        if(is_sorted(pcopy))
+            cout<<"Sortare corecta."<<endl<<"Pentru shell sort cu gap-ul N / (2 ^ k), a durat: "<<elapsed_time<<" millisecunde."<<endl;
+        else
+            cout<<"Sortare incorecta!"<<endl;
 
+        
+        cout<<endl;
+    }
     return 0;
 }
 
@@ -230,8 +237,8 @@ void mergesort(long long *p, int l, int r)
         }
         while(j <= r)
         {
-            aux.push_back(p[i]);
-            i++;
+            aux.push_back(p[j]);
+            j++;
         }
         int k = l;
         m = 0;
@@ -276,6 +283,8 @@ void IPmergesort(long long* p, int l, int r)
 }
 
 
+
+
 void bubble(long long *p)
 {
     bool is_sorted = false;
@@ -292,6 +301,8 @@ void bubble(long long *p)
         j--;
     }
 }
+
+
 
 
 void radix(long long *p)
@@ -324,19 +335,24 @@ void radix(long long *p)
 }
 
 
+
+
 void count_sort(long long* p)
 {
-    long long* fr = new long long[Maxi];
+    int* fr = new int[Maxi] ();     //dynamically initialize an array to 0
     int i, j, k = 0;
     for(i = 0; i < N; i++)
         fr[p[i]]++;
     for(i = 0; i <= Maxi; i++)
         while(fr[i])
         {
-            p[k++] = i;
+            p[k] = i;
+            k++;
             fr[i]--;
         }
 }
+
+
 
 
 void shell(long long *p)
