@@ -8,7 +8,9 @@
 using namespace std;
 using namespace std::chrono;
 
-long long N, Maxi;
+ofstream gout("output.txt");
+
+long long N, Maxi, val;
 int t, Tests;
 std::mt19937 generator(time(NULL));
 
@@ -22,28 +24,28 @@ void shell(long long*);         //shell sort. O(n sqrt(n))
 
 void gen(int g, long long* p)
 {
-    int val, i;
+    int i;
     val = generator() % Maxi + 1;
     switch(g){
         case 1:                         //all values of array are equal
-            cout<<"Vector egal. ";
+            gout<<"Vector egal. ";
             for(i = 0; i < N; i++)
                 p[i] = val;
             break;
         case 2:                         //sorted in ascending order
-            cout<<"Vector crescator. ";
+            gout<<"Vector crescator. ";
             p[0] = val;
             for(i = 1; i < N; i++)
                 p[i] = min(p[i-1] + 1, Maxi);
             break;
         case 3:                         //sorted in descending order
-            cout<<"Vector descrescator. ";
+            gout<<"Vector descrescator. ";
             p[0] = val;
             for(i = 1; i < N; i++)
                 p[i] = max(p[i-1] - 1, (long long) 0);
             break;
         case 4:                         //pseudo-random values
-            cout<<"Vector random. ";
+            gout<<"Vector random. ";
             for(i = 0; i < N; i++)
                 p[i] = generator() % Maxi + 1;
             break;
@@ -62,8 +64,8 @@ void init_copy(long long* p, long long* pcopy)
 void write_array(long long* p)
 {
     for(int i = 0; i < N; i++)
-        cout<<p[i]<<" ";
-    cout<<endl;
+        gout<<p[i]<<" ";
+    gout<<endl;
 }
 
 
@@ -86,12 +88,14 @@ int main()
 
  for (t = 1; t <= Tests; t++)
     {
+        gout<<"TEST "<<t<<":"<<endl<<endl;
         f>>N>>Maxi;                     //generate array
-        p = new long long[N];        
-        g = generator() % 4 + 1; 
-        cout<<"N = "<<N<<" Maxi = "<<Maxi<<endl;
+        for(g = 1; g <= 4; g++)
+        {
+        p = new long long[N];
+        gout<<"N = "<<N<<" Maxi = "<<Maxi<<endl;
         gen(g, p);
-        cout<<"First value in generated array: "<<p[0]<<endl;
+        gout<<"First value in generated array: "<<p[0]<<endl;
         //write_array(p);
         
         pcopy = new long long[N];
@@ -103,9 +107,9 @@ int main()
         double elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy)
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru sortarea din <algorithm>, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru sortarea din <algorithm>, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
+            gout<<"Sortare incorecta!"<<endl;
 
 
         init_copy(p, pcopy);            //simple merge sort
@@ -115,9 +119,9 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy)
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru simple merge sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru simple merge sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
+            gout<<"Sortare incorecta!"<<endl;
         
 
         init_copy(p, pcopy);            //in-place merge sort
@@ -127,9 +131,9 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy)
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru in-place merge sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru in-place merge sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
+            gout<<"Sortare incorecta!"<<endl;
         
 
         
@@ -141,9 +145,9 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy);
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru bubble sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru bubble sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
+            gout<<"Sortare incorecta!"<<endl;
         
 
         
@@ -155,9 +159,9 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy);
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru radix sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru radix sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
+            gout<<"Sortare incorecta!"<<endl;
 
 
         init_copy(p, pcopy);            //count sort
@@ -167,9 +171,9 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy);
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru count sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru count sort, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
+            gout<<"Sortare incorecta!"<<endl;
 
 
         
@@ -181,9 +185,9 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy);
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru shell sort cu gap-ul (3 ^ k - 1) / 2, a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru shell sort cu gap-ul (3 ^ k - 1) / 2, a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;    
+            gout<<"Sortare incorecta!"<<endl;    
 
         
         init_copy(p, pcopy);            //shell sort with gap N / (2 ^ k)
@@ -193,12 +197,13 @@ int main()
         elapsed_time = duration<double, std::milli>(final-inceput).count(); //https://stackoverflow.com/questions/728068/how-to-calculate-a-time-difference-in-c
         //write_array(pcopy);
         if(is_sorted(pcopy))
-            cout<<"Sortare corecta."<<endl<<"Pentru shell sort cu gap-ul N / (2 ^ k), a durat: "<<elapsed_time<<" millisecunde."<<endl;
+            gout<<"Sortare corecta."<<endl<<"Pentru shell sort cu gap-ul N / (2 ^ k), a durat: "<<elapsed_time<<" millisecunde."<<endl;
         else
-            cout<<"Sortare incorecta!"<<endl;
-
+            gout<<"Sortare incorecta!"<<endl;
+        gout << endl;
+        }
         
-        cout<<endl;
+        gout<<endl;
     }
     return 0;
 }
