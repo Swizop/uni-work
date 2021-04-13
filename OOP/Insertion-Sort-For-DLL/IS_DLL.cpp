@@ -28,8 +28,8 @@ using namespace std;
 
 class Node
     {
-        Node *nextnode;
         protected:
+            Node *nextnode;
             int info;
         public:
             Node(const int& info = 0, Node* next = NULL)
@@ -63,34 +63,31 @@ class Node
             {
                 return this->info;
             }
-            virtual Node* getnodenext()
+            Node* getnodenext()
             {
                 return this->nextnode;
             }
 
 
-            Node& operator=(const Node& n)
+            Node* operator=(const Node& n)
             {
                 delete this->nextnode;
                 
                 this->info = n.info;
                 this->nextnode = n.nextnode;
+
+                return this;
             }
             friend ostream& operator<<(ostream&, const Node&);
             friend istream& operator>>(istream&, Node&);
     };
 
+
 class Node_dublu: public Node
     {
-        Node_dublu *prev, *nextnode;
+        Node *prev;
         public:
-            Node_dublu(const int& info = 0, Node_dublu* prev = NULL, Node_dublu* next = NULL): Node(info), nextnode(next), prev(prev) 
-            {
-                if(prev != NULL)
-                    this->prev->nextnode = this;
-                if(next != NULL)
-                    this->nextnode->prev = this;
-            }
+            Node_dublu(const int& info = 0, Node* next = NULL, Node* prev = NULL): Node(info, next), prev(prev) {}
 
             Node_dublu(const Node_dublu& cop)
             {
@@ -98,6 +95,7 @@ class Node_dublu: public Node
                 prev = cop.prev;
                 nextnode = cop.nextnode;
             }
+
 
             ~Node_dublu()
             {
@@ -107,51 +105,79 @@ class Node_dublu: public Node
 
             
             
-            void setnodeprev(Node_dublu* n)
+            void setnodeprev(Node* n)
             {
                 this->prev = n;
             }
-            void setnodenext(Node_dublu *n)
-            {
-                this->nextnode = n;
-            }
             
             
-            Node_dublu* getprev()
+            Node* getprev()
             {
                 return this->prev;
             }
-            Node_dublu* getnodenext()
+            
+            
+            Node_dublu* operator=(const Node_dublu& ob)
             {
-                return this->nextnode;
+                delete this->nextnode;
+                delete this->prev;
+
+                this->info = ob.info;
+                this->nextnode = ob.nextnode;
+                this->prev = ob.prev; 
+                return this;
             }
+
+
+            friend istream& operator>>(istream&, Node_dublu&);
+            friend ostream& operator<<(ostream& out,const Node_dublu& n);
     };
 
-class doubly_linked_list
+
+class DLL
 {
-    friend class Node;
-    Node *first, *last;
+    Node_dublu *first, *last;
 
     public:
-       doubly_linked_list();
-       doubly_linked_list(doubly_linked_list&);
-       Node* getfirst()
+       DLL(Node_dublu* l = NULL, Node_dublu* r = NULL): first(l), last(r) {}
+       DLL(DLL& cop)
+       {
+           Node *aux = cop.first;
+           if (!aux)
+           {
+               this->first = this->last = NULL;
+           }
+           else
+           {
+               this->first = new Node_dublu(aux->getnodeinfo(), aux->getnodenext());
+               this->last = this->first;
+               Node *left;
+               while (aux->getnodenext() != NULL)
+               {
+                   aux = aux->getnodenext();
+                   left = this->getlast();                                                 //UPCASTING
+                   last = new Node_dublu(aux->getnodeinfo(), NULL, left);
+                   left->setnodenext(last);
+               }
+           }
+       }
+       Node_dublu* getfirst()
        {
            return this->first;
        }
-       Node* getlast()
+       Node_dublu* getlast()
        {
            return this->last;
        }
-       void setfirst(Node* n)
+       void setfirst(Node_dublu* n)
        {
            this->first = n;
        }
-       void setlast(Node* n)
+       void setlast(Node_dublu* n)
        {
            this->last = n;
        }
-       ~doubly_linked_list()
+       ~DLL()
        {
            Node* aux = this->first;
            while(aux != NULL)
@@ -164,59 +190,26 @@ class doubly_linked_list
 
 
        void add_element(int, int);
-       friend ostream& operator<<(ostream&, doubly_linked_list&);
-       friend istream& operator>>(istream&, doubly_linked_list&);
+       friend ostream& operator<<(ostream&, const DLL&);
+       friend istream& operator>>(istream&, DLL&);
        void delete_element(int);
-       friend doubly_linked_list operator+ (doubly_linked_list, doubly_linked_list);
-       friend void universal_method(int);
+       friend DLL operator+ (DLL, DLL);
 };
 
-void f(doubly_linked_list x)
+void f(DLL x)
 {
     return;
 }
 
-doubly_linked_list::doubly_linked_list()
+
+void DLL::add_element(int val, int poz)
 {
-    first = last = NULL;
-}
-
-
-doubly_linked_list::doubly_linked_list(doubly_linked_list& cop)
-{
-    Node* aux = cop.getfirst();
-    if(!aux)
-    {
-        this->first = this->last = NULL;
-    }
-    else
-    {
-        this->first = new Node();
-        this->first->setnodeinfo(aux->getnodeinfo());
-        this->first->setnodenext(aux->getnodenext());
-        this->setlast(this->getfirst());
-        Node *prev;
-        while(aux->getnodenext() != NULL)
-        {
-            aux = aux->getnodenext();
-            prev = this->getlast();
-            last = new Node();
-            last->setnodeprev(prev);
-            last->setnodeinfo(aux->getnodeinfo());
-            prev->setnodenext(last);
-        }
-    }
-}
-
-
-void doubly_linked_list::add_element(int val, int poz)
-{
-    Node* aux = this->getfirst();
-    Node* de_adaugat = new Node(val);
+    Node_dublu* aux = this->getfirst();
+    Node_dublu* de_adaugat = new Node_dublu(val);
     if(aux == NULL && poz == 1)
     {
-        setfirst(de_adaugat);
-        setlast(de_adaugat);
+        this->setfirst(de_adaugat);
+        this->setlast(de_adaugat);
     }
     else
     {
@@ -234,7 +227,7 @@ void doubly_linked_list::add_element(int val, int poz)
                 int i = 1;
                 while(i < poz && aux != NULL)
                 {
-                    aux = aux->getnodenext();
+                    aux = new Node_dublu(aux->getnodenext()->getnodeinfo(), aux->getnodenext(), aux);
                     i++;
                 }
                 if(i != poz)
@@ -272,9 +265,23 @@ istream& operator>>(istream& in, Node& n)
 }
 
 
-ostream& operator<<(ostream& out, doubly_linked_list& L)
+istream& operator>>(istream& in, Node_dublu& n)
 {
-    Node* aux = L.getfirst();
+    in >> n.info;
+    return in;
+}
+
+
+ostream& operator<<(ostream& out, const Node_dublu& n)
+{
+    out << n.info;
+    return out;
+}
+
+
+ostream& operator<<(ostream& out,const DLL& L)
+{
+    Node* aux = L.first;
     if(aux == NULL)
     {
         out<<"Lista este vida!"<<endl;
@@ -286,42 +293,35 @@ ostream& operator<<(ostream& out, doubly_linked_list& L)
         aux = aux->getnodenext();
     }
     out<<endl<<"Afisarea in ordine inversa: "<<endl;
-    aux = L.getlast();
-    while(aux != NULL)
+    Node_dublu* right = L.last;
+    while(right != NULL)
     {
-        out<<aux->getnodeinfo()<<" ";
-        aux = aux->getprev();
+        out<<right->getnodeinfo()<<" ";
+        right = new Node_dublu(right->getprev()->getnodeinfo(), NULL, right->getprev());
     }
     out<<endl;
     return out;
 }
 
 
-istream& operator>>(istream& in, doubly_linked_list& L)
+istream& operator>>(istream& in, DLL& L)
 {
-    int k = 1, ok, x;
-    cout<<endl<<"Initializare lista. Introduceti o valoare intreaga"<<endl;
-    in>>x;
-    L.add_element(x, k);
-    k++;
-    while(true)
+    int k, ok, x, n;
+    cout<<endl<<"Initializare lista. Introduceti lungimea listei"<<endl;
+    in>>n;
+    cout << endl << "Introduceti cele " << n << " valori din lista" << endl;
+    for(k = 1; k <= n; k++)
     {
-        cout<<endl<<"Inserati valoarea 1 daca doriti sa continuati"<<endl;
-        in>>ok;
-        if(ok != 1)
-            return in;
-        cout<<"Introduceti o valoare"<<endl;
-        in>>x;
+        in >> x;
         L.add_element(x, k);
-        k++;
     }
     return in;
 }
 
 
-void doubly_linked_list::delete_element(int poz)
+void DLL::delete_element(int poz)
 {
-    Node* aux = this->getfirst();
+    Node_dublu *aux = this->getfirst(), *urm;
     if(aux == NULL)
     {
         cout<<endl<<"Eroare! Lista este vida"<<endl;
@@ -329,8 +329,8 @@ void doubly_linked_list::delete_element(int poz)
     }
     if(poz == 1)
         {
-            aux->getnodenext()->setnodeprev(NULL);
-            this->setfirst(aux->getnodenext());
+            urm = new Node_dublu(aux->getnodenext()->getnodeinfo(), aux->getnodenext()->getnodenext(), NULL);
+            this->setfirst(urm);
             delete aux;
         }
         else
@@ -338,24 +338,32 @@ void doubly_linked_list::delete_element(int poz)
             int i = 1;
             while(i < poz && aux != NULL)
             {
-                aux = aux->getnodenext();
+                aux =  new Node_dublu(aux->getnodenext()->getnodeinfo(), aux->getnodenext()->getnodenext(), aux);
                 i++;
             }
             if(aux == NULL)
                 cout<<"Pozitie invalida!"<<endl;
             else
             {
-                aux->getprev()->setnodenext(aux->getnodenext());
                 if(aux->getnodenext() != NULL)
-                    aux->getnodenext()->setnodeprev(aux->getprev());
-                cout<<aux->getprev()->getnodenext()->getnodeinfo()<<" ";
-                cout<<aux->getnodenext()->getprev()->getnodeinfo()<<" ";
+                {
+                    urm = new Node_dublu(aux->getnodenext()->getnodeinfo(), aux->getnodenext()->getnodenext(), aux->getprev());
+                    aux->getprev()->setnodenext(urm);
+                    delete aux;
+                }
+                else
+                {
+                    aux->getprev()->setnodenext(aux->getnodenext());
+                    delete aux;
+                }
+                // cout<<aux->getprev()->getnodenext()->getnodeinfo()<<" ";
+                // cout<<aux->getnodenext()->getprev()->getnodeinfo()<<" ";
             }
         }
 }
 
 
-doubly_linked_list operator+ (doubly_linked_list L1, doubly_linked_list L2)
+DLL operator+ (DLL L1, DLL L2)
 {
     L1.getlast()->setnodenext(L2.getfirst());
     L2.getfirst()->setnodeprev(L1.getlast());
@@ -363,27 +371,28 @@ doubly_linked_list operator+ (doubly_linked_list L1, doubly_linked_list L2)
     return L1;
 }
 
-
-void universal_method(int n)
+template <typename T>
+void prelucrare_n_elemente(int n)
 {
     int i;
-    doubly_linked_list* ls = new doubly_linked_list[n];
+    T* storageUnit = new T[n];
     for(i = 0; i < n; i++)
     {
-        cout<<"Citire lista "<<i+1<<":\n";
-        cin>>ls[i];
+        cout<<"Citirea instantei de obiect cu numarul "<<i+1<<":\n";
+        cin>>storageUnit[i];
     }
     for(i = 0; i < n; i++)
     {
-        cout<<"Afisare lista "<<i+1<<":\n";
-        cout<<ls[i];
+        cout<<"Afisare instanta de obiect cu numarul "<<i+1<<":\n";
+        cout<<storageUnit[i];
     }
 }
 int main()
 {
-    doubly_linked_list d1, d2, s;
+    DLL d1, d2, s;
     int n;
     int opt, k = 0, x, y, z;
+    cin >> d1;
     while(true)
     {
         cin>>opt;
@@ -397,7 +406,7 @@ int main()
                 d2 = d1;
                 break;
             case 3:
-                d2 = doubly_linked_list();
+                d2 = DLL();
                 break;
             case 4:
                 cout<<"Indicele listei la care doriti sa adaugati un element:\n";
@@ -441,8 +450,6 @@ int main()
             case 7:
                 s = d1 + d2;
                 cout<<"Suma este: "<<s;
-            default:
-                cout<<"Indice gresit"<<endl;
             
             case 8:
                 cout<<"Introduceti d2"<<endl;
@@ -451,9 +458,12 @@ int main()
             case 9:
                 cout<<"Introduceti n"<<endl;
                 cin>>n;
-                universal_method(n);
+                prelucrare_n_elemente<DLL>(n);
                 break;
+            default:
+                cout<<"Indice gresit"<<endl;
         }
+        
         cout<<"Continuati? (1 = Da)"<<endl;
         cin>>x;
         if(x != 1)
