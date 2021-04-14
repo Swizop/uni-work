@@ -1,3 +1,30 @@
+// Toate clasele vor conține obligatoriu constructori de inițializare (0.25p),
+// parametrizați (0.25p) și de copiere (0.25p); destructor (0.25p); 
+// operatorii „=” (0.5p), „>>” (0.5p), „<<” (0.5p) supraîncărcați 
+// corespunzător, moșteniri & encapsulare (0.5p)  
+// Clasele derivate trebuie sa contina constructori parametrizati
+// (prin care sa se evidentieze transmiterea parametrilor catre constructorul
+// din clasa de baza) si destructori. (1p) 
+// În fiecare proiect vor fi ilustrate conceptele de upcasting, downcasting,
+// funcții virtuale (pure – unde se consideră mai natural) – 1.5p (0.5p / cerință) 
+// Utilizarea de variabile și de funcții statice – 1p 
+// Citirea informațiilor complete a n obiecte, memorarea și
+// afișarea acestora – 0.5p 
+// Meniu interactiv – 0.5p 
+// Rezolvarea corectă a cerințelor suplimentare corespunzatoare fiecarei teme – 1.5p. 
+// Se acordă punctaje parțiale corespunzător și 1p oficiu.  
+
+// Se dau urmatoarele clase: 
+// - Clasa Persoana(int id,  string nume) 
+// - Clasa Abonat:Persoana(string nr_telefon) 
+// - Clasa Abonat_Skype: Abonat (string id_skype) 
+// - Clasa Abonat_Skype_Romania (string adresa_mail) : Abonat_Skype 
+// - Clasa Abonat_Skype_Extern(string tara) : Abonat_Skype 
+// Sa se construiasca clasa Agenda ce contina o lista de abonati si sa se 
+// supraincarce operatorul [ ](indexare)care returneaza abonatul cu numele 
+// precizat.  
+
+
 #include <iostream>
 #include <string>
 #include <vector>
@@ -9,7 +36,7 @@ class Persoana
     protected:
         int id;
         string nume;
-
+        static int count;
     
     public:
         
@@ -18,6 +45,7 @@ class Persoana
         {
             this->id = cop.id;
             this->nume = cop.nume;
+            count ++;
         }
         virtual ~Persoana() { }
 
@@ -28,12 +56,28 @@ class Persoana
             this->nume = cop.nume;
             return *this;
         }
+    	
+        string getnume()
+        {
+            return this->nume;
+        }
+
+
+
+
+        static int getcount()
+        {
+            return count;
+        }
+
+
+
 
         friend istream& operator>>(istream&, Persoana&);
         friend ostream& operator<<(ostream&, const Persoana&);
 };
 
-
+int Persoana::count = 0;
 ostream& operator<<(ostream& out, const Persoana& p)
 {
     out << "Persoana cu id-ul " << p.id << " are numele " << p.nume <<".\n";
@@ -143,7 +187,7 @@ class Abonat_Skype_Romania: public Abonat_Skype
         {
             this->adresa_mail = cop.adresa_mail;
         }
-        ~Abonat_Skype_Romania() { }
+        virtual ~Abonat_Skype_Romania() { }
 
 
         Abonat_Skype_Romania& operator=(const Abonat_Skype_Romania& cop)
@@ -185,7 +229,7 @@ class Abonat_Skype_Extern: public Abonat_Skype
         {
             this->tara = cop.tara;
         }
-        ~Abonat_Skype_Extern() { }
+        virtual ~Abonat_Skype_Extern() { }
 
 
         Abonat_Skype_Extern& operator=(const Abonat_Skype_Extern& cop)
@@ -218,6 +262,7 @@ istream& operator>>(istream& in, Abonat_Skype_Extern& p)
 
 class Agenda
 {
+    public:
     vector<Abonat*> v;
     public:
         Agenda(vector<Abonat*> w = vector<Abonat*>())
@@ -336,34 +381,47 @@ class Agenda
             switch (q)
             {
             case 1:
-                Abonat *a;
-                cin >> *a;
-                this->v.push_back(a);
+            {
+                Abonat a;
+                cin >> a;
+                this->v.push_back(new Abonat(a));
                 break;
-            
-            case 2:
-                Abonat_Skype* s;
-                cin >> *s;
-                this->v.push_back(s);
-                break;
+            }
+            case 2: {
+                Abonat_Skype s;
+                cin >> s;
+                this->v.push_back(new Abonat_Skype(s));
+                break; }
 
-            case 3:
-                Abonat_Skype_Romania* r;
-                cin >> *r;
-                this->v.push_back(r);
-            
-            case 4:
-                Abonat_Skype_Extern* e;
-                cin >> *e;
-                this->v.push_back(e);
-            
-            default:
+            case 3: {
+                Abonat_Skype_Romania r;
+                cin >> r;
+                this->v.push_back(new Abonat_Skype_Romania(r));
+                break;
+            }
+            case 4: {
+                Abonat_Skype_Extern e;
+                cin >> e;
+                this->v.push_back(new Abonat_Skype_Extern(e));
+                break; }
+            default: 
                 cout << "Ati introdus un numar gresit";
                 break;
             }
         }
         friend istream& operator>>(istream& in, Agenda& ob);
         friend ostream& operator<<(ostream& out, const Agenda& ob);
+
+
+        Abonat* operator [](const string& str)
+        {
+            for(int i = 0; i < v.size(); i++)
+            {
+                if(v[i]->getnume() == str)
+                    return v[i];
+            }
+            return NULL;
+        } 
 };
 
 
@@ -381,26 +439,33 @@ istream& operator>>(istream& in, Agenda& ob)
             switch (q)
             {
             case 1:
-                Abonat *a;
-                in >> *a;
-                ob.v.push_back(a);
+            {
+                Abonat a;
+                in >> a;
+                ob.v.push_back(new Abonat(a));
                 break;
-            
+            }
             case 2:
-                Abonat_Skype* s;
-                in >> *s;
-                ob.v.push_back(s);
+            {
+                Abonat_Skype s;
+                in >> s;
+                ob.v.push_back(new Abonat_Skype(s));
                 break;
-
+            }
             case 3:
-                Abonat_Skype_Romania* r;
-                in >> *r;
-                ob.v.push_back(r);
-            
+            {
+                Abonat_Skype_Romania r;
+                in >> r;
+                ob.v.push_back(new Abonat_Skype_Romania(r));
+                break;
+            }
             case 4:
-                Abonat_Skype_Extern* e;
-                in >> *e;
-                ob.v.push_back(e);
+            {
+                Abonat_Skype_Extern e;
+                in >> e;
+                ob.v.push_back(new Abonat_Skype_Extern(e));
+                break;
+            }
             
             default:
                 cout << "Ati introdus un numar gresit";
@@ -418,38 +483,195 @@ ostream& operator<<(ostream& out, const Agenda& ob)
         Abonat_Skype_Extern* e = dynamic_cast<Abonat_Skype_Extern*>(ob.v[i]);              //DOWNCASTING
         if(e != NULL)
         {
-            cout << *e;                                 
+            out << *e;                                 
             continue;
         }
-
+    
+        
         Abonat_Skype_Romania* r = dynamic_cast<Abonat_Skype_Romania*>(ob.v[i]);
+        
         if(r != NULL)
         {
-            cout << *r;
+            out << *r;
             continue;
         }
 
         Abonat_Skype* s = dynamic_cast<Abonat_Skype*>(ob.v[i]);
         if(s != NULL)
          {
-            cout << *s;
+            out << *s;
             continue;
          }
 
         Abonat* a = dynamic_cast<Abonat*>(ob.v[i]);
         if(a != NULL)
-            cout << *a;
+        {
+            out << *a;
+        }
         else
-           cout << "Pointer invalid!\n";
+           out << "Pointer invalid!\n";
     }
     return out;
 }
 
-void foo(Abonat_Skype_Extern x) { Abonat_Skype_Extern q = Abonat_Skype_Extern(); q = x; cout << q; }
+
+
+void afisareAb(Abonat* a)
+{
+    Abonat_Skype_Extern* e = dynamic_cast<Abonat_Skype_Extern*>(a);              //DOWNCASTING
+        if(e != NULL)
+        {
+            cout << *e;                                 
+            return;
+        }
+    
+        
+        Abonat_Skype_Romania* r = dynamic_cast<Abonat_Skype_Romania*>(a);
+        
+        if(r != NULL)
+        {
+            cout << *r;
+            return;
+        }
+
+        Abonat_Skype* s = dynamic_cast<Abonat_Skype*>(a);
+        if(s != NULL)
+         {
+            cout << *s;
+            return;
+         }
+
+        Abonat* ab = dynamic_cast<Abonat*>(a);
+        if(ab != NULL)
+        {
+            cout << *ab;
+            return;
+        }
+        else
+           cout << "Pointer invalid!\n";
+}
+
+void afisareMeniu()
+{
+    cout << "================" << endl;
+    cout << "1. Cititi A1 de la tastatura" << endl;
+    cout << "2. A2 = A1" << endl;
+    cout << "3. Afisati numarul total de abonati declarati, din ambele liste" << endl;
+    cout << "4. Adaugati abonati manual la una dintre agende" << endl;
+    cout << "5. Afisati una dintre agende " << endl;
+    cout << "6. Cautati un abonat intr-una dintre agende " << endl;
+    cout << "7. Cititi A2 de la tastatura " << endl;
+    cout << "8. Cititi n obiecte. Stocati-le si afisati-le " << endl;
+    cout << "9. Iesiti din program" << endl;
+    cout << "================" << endl;
+}
+
+void universal_method(int x)
+{
+    vector<Agenda> vec;
+    Agenda A;
+    for(int i = 0 ; i < x; i ++ )
+    {
+        cin >> A;
+        vec.push_back(A);
+    }
+
+    for(int i = 0 ;  i < x; i ++)
+    {   cout << "Afisarea Agendei cu numarul" << i << ":\n";
+        cout << vec[i];
+    }
+}
 int main()
 {
-    Persoana* p;
-    cin >> *p;
-    
+    Agenda A1, A2;
+    int opt, x;
+    string nume;
+    Abonat* n;
+
+
+    cout << "Aveti 2 agende, A1 si A2.\nIntroduceti o comanda. Pentru legenda, introduceti 0\n";
+    while(true)
+    {
+        cout << "Introduceti o comanda\n";
+        cin>>opt;
+        switch(opt)
+        {
+            case 0:
+                afisareMeniu();
+                break;
+            case 1:
+                cout<<"Introduceti A1"<<endl;
+                cin>>A1;
+                break;
+            case 2:
+                A2 = A1;
+                break;
+            case 3:
+                cout << "Numarul total de abonati declarati, din ambele liste este: " << Persoana::getcount() << endl;
+                break;
+            case 4:
+                cout<<"Indicele listei la care doriti sa adaugati un abonat:\n";
+                cin>>x;
+                if(x >= 3)
+                    cout<<"Indice invalid";
+                else
+                    if(x == 1)
+                        A1.introduceti_abonat();
+                    else
+                        if(x == 2)
+                            A2.introduceti_abonat();
+                break;
+            case 5:
+                
+                cout<<"Indicele listei pe care doriti sa o afisati:\n";
+                cin >> x;
+                if(x >= 3)
+                    cout<<"Indice invalid";
+                else
+                    if(x == 1)
+                        cout << A1;
+                    else
+                        if(x == 2)
+                            cout << A2;
+                break;
+
+            case 6:
+                cout<<"Numele abonatului pe care doriti sa-l cautati:\n";
+                getline(cin, nume);
+                getline(cin, nume);
+                cout<<"\nAgenda in care doriti sa-l cautati:\n";
+                cin>>x;
+                if(x >= 3)
+                    cout<<"Indice invalid";
+                else
+                {
+                    if(x == 1)
+                        n = A1[nume];
+                    else
+                        if(x == 2)
+                            n = A2[nume];
+                    if(n == NULL)
+                        cout << "Abonatul nu exista";
+                    else 
+                        afisareAb(n);
+                }
+                break;
+            case 7:
+                cout<<"Introduceti A2"<<endl;
+                cin>>A2;
+                break;
+            
+            case 8:
+                cout<<"Introduceti x"<<endl;
+                cin >> x;
+                universal_method(x);
+                break;
+            case 9:
+                return 0;
+            default:
+                cout << "Indice gresit\n";
+                break;
+        }
+    }
     return 0;
 }
