@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
-#include <unordered_set>
+#include <vector>
+#include <list>
+#define MAX 666013
 
 using namespace std;
 
@@ -9,28 +11,37 @@ ofstream g("hashuri.out");
 
 int n, x;
 short int op;
-unordered_set<int> s;
+vector<list<int>> s(MAX);
 
 int main()
 {
     f >> n;
-    int i;
-
+    int i, y;
+    list<int>::iterator q;
     for(i = 1; i <= n; i++)
     {
         f >> op >> x;
         switch(op){
             case 1:
-                s.insert(x);
+                y = x % MAX;
+                q = s[y].begin();
+                while(q != s[y].end() && *q != x)
+                    q++;
+                if(q == s[y].end())
+                    s[y].push_back(x);
                 break;
             case 2:
-                s.erase(x);
+                s[x % MAX].remove(x);
                 break;
             default:
-                if(s.find(x) != s.end())
-                    g << 1 << endl;
+                y = x % MAX;
+                q = s[y].begin();
+                while(q != s[y].end() && *q != x)
+                    q++;
+                if(q == s[y].end())
+                    g << "0\n";
                 else
-                    g << 0 << endl;
+                    g << "1\n";
                 break;
         }
     }
