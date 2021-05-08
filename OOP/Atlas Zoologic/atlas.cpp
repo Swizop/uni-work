@@ -40,7 +40,9 @@ class Animal
 
         friend istream& operator>>(istream& in, Animal& ob)
         {
+            //getline(in, ob._denumire);
             cout << "\nDenumire: ";
+            //getline(in, ob._denumire);
             getline(in, ob._denumire);
             cout << "\nIncrengatura animal: ";
             getline(in, ob._increngatura);
@@ -194,7 +196,7 @@ class Peste: public Vertebrat<T>
 
         void afis()
         {
-            cout << *this;          //as putea ca aici in loc de cout sa fac o afisare ca intr-un atlas, iar cout ul simplu sa fie afisare a datelor sumar
+            cout << *this;
             cout << "Animalul este un peste.\n";
         }
         void read()
@@ -211,6 +213,8 @@ class Peste: public Vertebrat<T>
             cout << "\nLungime peste (in metri): ";
             in >> ob._lungime;
             cout << '\n';
+            string aux;
+            getline(in, aux);
             if(ob._lungime >= 1)
                 inc_nr();  
             return in;
@@ -237,6 +241,163 @@ class Peste: public Vertebrat<T>
 template<typename T>
 int Peste<T>::_nr = 0;
 
+
+template <typename T = string>
+class Pasare: public Vertebrat<T>
+{
+    T _culoarePenaj;
+
+    public:
+
+
+        Pasare(T nume = "", T inc = "", T cls = "", T ord = "", T hab = "", T mH = "", T cP = ""): 
+            Vertebrat<T>(nume, inc, cls, ord, hab, mH), _culoarePenaj(cP) { }
+        ~Pasare() = default;
+
+        Pasare(const Pasare& cop): Vertebrat<T>(cop)
+        {
+            this->_culoarePenaj = cop._culoarePenaj;
+        }
+
+        Pasare& operator=(const Pasare& cop)
+        {
+            Vertebrat<T>::operator=(cop);
+            this->_culoarePenaj = cop._culoarePenaj;
+            return *this;
+        }
+
+        void afis()
+        {
+            cout << *this;
+            cout << "Animalul este o pasare.\n";
+        }
+        void read()
+        {
+            cout << "\nIntroduceti datele despre pasare.";
+            cin >> *this;
+        }
+
+        friend istream& operator>>(istream& in, Pasare& ob)
+        {
+            in >> static_cast<Vertebrat<T>&> (ob);                       //UPCASTING
+            cout << "Culoare penaj: ";
+            getline(in, ob._culoarePenaj);
+            cout << '\n';
+            return in;
+        }
+        friend ostream& operator<<(ostream& out, const Pasare& ob)
+        {
+            out << static_cast<const Vertebrat<T>&>(ob);                     //UPCASTING
+            out << "Culoare penaj: " << ob._culoarePenaj << '\n';
+            return out;
+        }
+};
+
+
+template <typename T = string>
+class Mamifer: public Vertebrat<T>
+{
+    T _procentGrasimeLapte;
+
+    public:
+
+
+        Mamifer(T nume = "", T inc = "", T cls = "", T ord = "", T hab = "", T mH = "", T pr = ""): 
+            Vertebrat<T>(nume, inc, cls, ord, hab, mH), _procentGrasimeLapte(pr) { }
+        ~Mamifer() = default;
+
+        Mamifer(const Mamifer& cop): Vertebrat<T>(cop)
+        {
+            this->_procentGrasimeLapte = cop._procentGrasimeLapte;
+        }
+
+        Mamifer& operator=(const Mamifer& cop)
+        {
+            Vertebrat<T>::operator=(cop);
+            this->_procentGrasimeLapte = cop._procentGrasimeLapte;
+            return *this;
+        }
+
+        void afis()
+        {
+            cout << *this;
+            cout << "Animalul este un mamifer.\n";
+        }
+        void read()
+        {
+            cout << "\nIntroduceti datele despre mamifer.";
+            cin >> *this;
+        }
+
+        friend istream& operator>>(istream& in, Mamifer& ob)
+        {
+            in >> static_cast<Vertebrat<T>&> (ob);                       //UPCASTING
+            cout << "Procentul grasimii laptelui mamiferului: ";
+            getline(in, ob._procentGrasimeLapte);
+            cout << '\n';
+            return in;
+        }
+        friend ostream& operator<<(ostream& out, const Mamifer& ob)
+        {
+            out << static_cast<const Vertebrat<T>&>(ob);                     //UPCASTING
+            out << "Procent grasime lapte: " << ob._procentGrasimeLapte << '\n';
+            return out;
+        }
+};
+
+
+template <typename T = string>
+class Reptila: public Vertebrat<T>
+{
+    T _tipPiele;        // solzoasa / acoperita cu placi
+
+    public:
+
+
+        Reptila(T nume = "", T inc = "", T cls = "", T ord = "", T hab = "", T mH = "", T tP = ""): 
+            Vertebrat<T>(nume, inc, cls, ord, hab, mH), _tipPiele(tP) { }
+        ~Reptila() = default;
+
+        Reptila(const Reptila& cop): Vertebrat<T>(cop)
+        {
+            this->_tipPiele = cop._tipPiele;
+        }
+
+        Reptila& operator=(const Reptila& cop)
+        {
+            Vertebrat<T>::operator=(cop);
+            this->_tipPiele = cop._tipPiele;
+            return *this;
+        }
+
+        void afis()
+        {
+            cout << *this;
+            cout << "Animalul este o reptila.\n";
+        }
+        void read()
+        {
+            cout << "\nIntroduceti datele despre reptila.";
+            cin >> *this;
+        }
+
+        friend istream& operator>>(istream& in, Reptila& ob)
+        {
+            in >> static_cast<Vertebrat<T>&> (ob);                       //UPCASTING
+            cout << "Tip piele (solzoasa, acoperita cu placi): ";
+            getline(in, ob._tipPiele);
+            cout << '\n';
+            return in;
+        }
+        friend ostream& operator<<(ostream& out, const Reptila& ob)
+        {
+            out << static_cast<const Vertebrat<T>&>(ob);                     //UPCASTING
+            out << "Tip piele: " << ob._tipPiele << '\n';
+            return out;
+        }
+};
+
+
 int main()
 {
     // Nevertebrat<string> x, y;
@@ -249,13 +410,25 @@ int main()
     // cin >> a;
     // cout << a;
 
-    Peste<string> p1, p2;
-    cin >> p1;
+    // Peste<string> p1, p2;
+    // cin >> p1;
 
-    cout << p1;
-    Peste<>::show_nr();
+    // cout << p1;
+    // Peste<>::show_nr();
 
-    p2 = p1;
-    p2.afis();
+    // p2 = p1;
+    // p2.afis();
+
+    // Pasare<string> p11;
+    // cin >> p11;
+    // cout << p11;
+
+    Nevertebrat<string> re;
+    Peste<string> m;
+
+    cin >> m >> re;
+
+   m.afis();
+    re.afis();
     return 0;
 }
