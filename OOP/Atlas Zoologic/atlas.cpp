@@ -1,41 +1,3 @@
-// Cerințe comune tuturor temelor:
-
-// utilizarea sabloanelor (functii, clase)
-
-// utilizarea STL
-
-// utilizarea variabilelor, funcțiilor statice , constantelor și a unei functii const
-
-// utilizarea conceptelor de RTTI raportat la templat-uri (ex: upcast & dynamic_cast)
-
-// citirea informațiilor complete a n obiecte, memorarea și afișarea acestora
-
-// cerințe generale aplicate fiecărei teme din acest fișier:
-
-// să se identifice și să se implementeze ierarhia de clase;
-
-// clasele să conțină constructori, destructori, =, supraincarcare pe >> si << pentru citire si afisare;
-
-// clasa de baza sa conțină funcție virtuala de afisare si citire, rescrisa în clasele derivate, iar operatorul de citire si afisare să fie implementat ca 
-//funcție prieten (în clasele derivate să se facă referire la implementarea acestuia în clasa de baza).
-
-// La ora de Biologie, copiii din ciclul gimnazial învață că regnul animal se împarte în 2 grupuri: nevertebrate și vertebrate. 
-//La rândul lor, vertebratele se împart în pești, păsări, mamifere și reptile.
-
-// Cerința suplimentară:
-
-// Să se adauge toate campurile relevante pentru modelarea acestei probleme.
-
-// Să se construiască clasa template AtlasZoologic care sa conțină un număr de animale
-// (incrementat automat la adaugarea unei noi file) și structura de obiecte de tipul regnurilor implementate, alocata dinamic. Sa se supraincarce operatorul +=
-// pentru inserarea unei fișe de observație a unui animal în structura.
-
-// Să se construiască o specializare pentru tipul Pești care sa adapteze operatorii menționați și care sa afiseze, în plus, cati pesti rapitori de lungime mai mare de 1m s-au citit.
-
-// Structura de date: list<animal de un anumit tip *>
-
-
-//functie pur virtuala -> mananca animalul
 #include <iostream>
 #include <string>
 #include <list>
@@ -444,6 +406,16 @@ class AtlasZoologic
     const T _editura = "MatSRL";
 
     public:
+        T get_editura() const                                           //FUNCTIE CONST
+        {
+            return _editura;
+        }
+        int get_nrPagini() const
+        {
+            return _nrPagini;
+        }
+
+
         AtlasZoologic(T titlu = "", int nr = 0, list<Animal<T>*> l = list<Animal<T>*>()): 
             _titlu(titlu), _nrPagini(nr) {
                 for(auto i = l.begin(); i != l.end(); ++i)
@@ -499,7 +471,40 @@ class AtlasZoologic
             this->_nrPagini = cop._nrPagini;
             for(auto i = cop._file.begin(); i != cop._file.end(); ++i)
                 {
-                    this->_file.push_back(new Animal<T>(*i));
+                    Nevertebrat<T> *p1 = dynamic_cast<Nevertebrat<T>*>(*i);                                     //DOWNCASTING
+                    if(p1 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p1));
+                        continue;
+                    }
+
+                    Reptila<T> *p2 = dynamic_cast<Reptila<T>*>(*i);                                            //DOWNCASTING
+                    if(p2 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p2));
+                        continue;
+                    }
+
+                    Pasare<T> *p3 = dynamic_cast<Pasare<T>*>(*i);                                              //DOWNCASTING
+                    if(p3 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p3));
+                        continue;
+                    }
+
+                    Peste<T> *p4 = dynamic_cast<Peste<T>*>(*i);                                                 //DOWNCASTING
+                    if(p4 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p4));
+                        continue;
+                    }
+
+                    Mamifer<T> *p5 = dynamic_cast<Mamifer<T>*>(*i);                                             //DOWNCASTING
+                    if(p5 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p5));
+                        continue;
+                    }
                 }
         }
 
@@ -512,21 +517,57 @@ class AtlasZoologic
                 delete i;
             }
             _file.clear();
+
+            
             for(auto i = cop._file.begin(); i != cop._file.end(); ++i)
                 {
-                    this->_file.push_back(new Animal<T>(*i));
+                    Nevertebrat<T> *p1 = dynamic_cast<Nevertebrat<T>*>(*i);                                     //DOWNCASTING
+                    if(p1 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p1));
+                        continue;
+                    }
+
+                    Reptila<T> *p2 = dynamic_cast<Reptila<T>*>(*i);                                            //DOWNCASTING
+                    if(p2 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p2));
+                        continue;
+                    }
+
+                    Pasare<T> *p3 = dynamic_cast<Pasare<T>*>(*i);                                              //DOWNCASTING
+                    if(p3 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p3));
+                        continue;
+                    }
+
+                    Peste<T> *p4 = dynamic_cast<Peste<T>*>(*i);                                                 //DOWNCASTING
+                    if(p4 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p4));
+                        continue;
+                    }
+
+                    Mamifer<T> *p5 = dynamic_cast<Mamifer<T>*>(*i);                                             //DOWNCASTING
+                    if(p5 != NULL)
+                    {
+                        this->_file.push_back(static_cast<Animal<T>*>(p5));
+                        continue;
+                    }
                 }
             return *this;
         }
 
         void afis()
         {
+            cout << endl;
             cout << "Atlasul zoologic \"" << _titlu << "\"\nEditura " << _editura << '\n';
             cout << *this;
         }
         void read()
         {
-            cout << "\nIntroduceti datele din atlas.";
+            cout << "\nIntroduceti datele din atlas.\n";
             cin >> *this;
         }
 
@@ -547,12 +588,40 @@ class AtlasZoologic
                 getline(in, op);
                 if(op == "1")
                 {
-                    Nevertebrat<T> *p1;
+                    Nevertebrat<T> *p1 = new Nevertebrat<T>;
                     in >> *p1;
                     ob._file.push_back(static_cast<Animal<T>*>(p1));
                     continue;
                 }
-                
+                if(op == "2")
+                {
+                    Reptila<T> *p2 = new Reptila<T>;
+                    in >> *p2;
+                    ob._file.push_back(static_cast<Animal<T>*>(p2));
+                    continue;
+                }
+                if(op == "3")
+                {
+                    Pasare<T> *p3 = new Pasare<T>;
+                    in >> *p3;
+                    ob._file.push_back(static_cast<Animal<T>*>(p3));
+                    continue;
+                }
+                if(op == "4")
+                {
+                    Peste<T> *p4 = new Peste<T>;
+                    in >> *p4;
+                    ob._file.push_back(static_cast<Animal<T>*>(p4));
+                    continue;
+                }
+                if(op == "5")
+                {
+                    Mamifer<T> *p5 = new Mamifer<T>;
+                    in >> *p5;
+                    ob._file.push_back(static_cast<Animal<T>*>(p5));
+                    continue;
+                }
+                cout << "\nIndice gresit.";
             }
             return in;
         }
@@ -561,48 +630,172 @@ class AtlasZoologic
             int i = 1;
             for(auto j = ob._file.begin(); j != ob._file.end(); ++j)
             {
-                out << "PAGINA " << i << "\n";
+                out << "\n\nPAGINA " << i << "\n";
                 i++;
+
+                Nevertebrat<T> *p1 = dynamic_cast<Nevertebrat<T>*>(*j);                                     //DOWNCASTING
+                if(p1 != NULL)
+                {
+                    p1->afis();
+                    continue;
+                }
+
+                Reptila<T> *p2 = dynamic_cast<Reptila<T>*>(*j);                                            //DOWNCASTING
+                if(p2 != NULL)
+                {
+                    p2->afis();
+                    continue;
+                }
+
+                Pasare<T> *p3 = dynamic_cast<Pasare<T>*>(*j);                                              //DOWNCASTING
+                if(p3 != NULL)
+                {
+                    p3->afis();
+                    continue;
+                }
+
+                Peste<T> *p4 = dynamic_cast<Peste<T>*>(*j);                                                 //DOWNCASTING
+                if(p4 != NULL)
+                {
+                    p4->afis();
+                    continue;
+                }
+
+                Mamifer<T> *p5 = dynamic_cast<Mamifer<T>*>(*j);                                             //DOWNCASTING
+                if(p5 != NULL)
+                {
+                    p5->afis();
+                    continue;
+                }
             }
             return out;
         }
+
+
+        AtlasZoologic& operator+=(Animal<T>* ob)
+        {
+            this->_nrPagini++;
+            this->_file.push_back(ob);
+            return *this;
+        }
 };
 
-void f(Nevertebrat<string> x)
+template<typename T>
+void universal_method(int n)                                //citirea, stocarea si afisarea a n elemente
 {
-    cin >> x;
+    vector<AtlasZoologic<T>*> vec;
+    AtlasZoologic<T>* A = new AtlasZoologic<T>;
+    for(int i = 0 ; i < n; i ++ )
+    {
+        cout << "Citirea Atlasului Zoologic cu numarul " << i + 1 << ":\n";
+        cin >> *A;
+        vec.push_back(A);
+    }
+
+    for(int i = 0 ;  i < n; i ++)
+    {   cout << "Afisarea Atlasului Zoologic cu numarul " << i + 1 << ":\n";
+        vec[i]->afis();
+        cout << endl;
+    }
 }
+
+
+void afisareMeniu()
+{
+    cout << "================" << endl;
+    cout << "1. Cititi A de la tastatura" << endl;
+    cout << "2. Afisati editura atlasului" << endl;
+    cout << "3. Afisati cati pesti rapitori de lungime mai mare de 1m s-au citit." << endl;
+    cout << "4. Adaugati un animal manual la A" << endl;
+    cout << "5. Afisati A" << endl;
+    cout << "6. Afisati numarul de pagini din atlas" << endl;
+    cout << "7. Cititi n obiecte. Stocati-le si afisati-le " << endl;
+    cout << "8. Iesiti din program" << endl;
+    cout << "================" << endl;
+}
+
+
 int main()
 {
-    // Nevertebrat<string> x, y;
-    // x.read();
-    // x.afis();
-    // y.read();
-    // y.afis();
 
-    // Vertebrat<string> a;
-    // cin >> a;
-    // cout << a;
 
-    // Peste<string> p1, p2;
-    // cin >> p1;
+    AtlasZoologic<string> A;
+    int n;
+    string nume;
+    string O, op;
 
-    // cout << p1;
-    // Peste<>::show_nr();
 
-    // p2 = p1;
-    // p2.afis();
+    cout << "Aveti un atlas zoologic, A.\n";
+    while(true)
+    {
+        cout << "Introduceti o comanda. Pentru legenda, introduceti 0\n";
+        getline(cin, O);
 
-    // Pasare<string> p11;
-    // cin >> p11;
-    // cout << p11;
+        if(O == "0")
+            afisareMeniu();
+        if(O == "1")
+            A.read();
+        if(O == "2")
+            cout << A.get_editura() << '\n';
+        if(O == "3")
+        {
+            cout << "Numarul total de pesti rapitori de lungime mai mare de 1m este: ";
+            Peste<string>::show_nr();
+            cout << endl;
+        }
+        if(O == "4")
+        {
+            cout <<  "Introduceti tipul de animal dorit.\n1 = Nevertebrat, 2 = Reptila, 3 = Pasare, 4 = Peste, 5 = Mamifer\n";
 
-    //AtlasZoologic<string> a;
-    Nevertebrat<string> a;
-    f(a);
-    // string x;
-    // getline(cin, x);
-    // cin >> a;
-    // cout << a;
+            getline(cin, op);
+            if(op == "1")
+            {
+                Nevertebrat<string> *p1 = new Nevertebrat<string>;
+                cin >> *p1;
+                A += p1;
+            }
+            if(op == "2")
+            {
+                Reptila<string> *p2 = new Reptila<string>;
+                cin >> *p2;
+                A += p2;
+            }
+            if(op == "3")
+            {
+                Pasare<string> *p3 = new Pasare<string>;
+                cin >> *p3;
+                A += p3;
+            }
+            if(op == "4")
+            {
+                Peste<string> *p4 = new Peste<string>;
+                cin >> *p4;
+                A += p4;
+            }
+            if(op == "5")
+            {
+                Mamifer<string> *p5 = new Mamifer<string>;
+                cin >> *p5;
+                A += p5;
+            }
+            if(op > "5")
+                cout << "\nIndice gresit.";
+        }
+        if(O == "5")
+            A.afis();
+        
+        if(O == "6")
+            cout << A.get_nrPagini() << '\n';
+        if(O == "7")
+        {
+            cout<<"Introduceti n"<<endl;
+            cin >> n;
+            universal_method<string>(n);
+        }
+        if(O == "8")
+            return 0;
+        if(O > "8")
+            cout << "Indice gresit\n";
+    }
     return 0;
 }
