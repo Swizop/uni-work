@@ -8,8 +8,8 @@
 
 using namespace std;
 
-ifstream f("inp1.in");
-ofstream g("dfa.out");
+ifstream f("inp2.in");
+ofstream g("dfa2.out");
 
 char M[101][101][101];        //adjacency matrix
 int v[101], nrStates;
@@ -38,6 +38,15 @@ void complete(set<int> &e, int curr, set<int> &f)
             if(f.find(i) != f.end())
                 f.insert(curr);
         }
+}
+
+
+int check(vector<set<int>> w, set<int> z)
+{
+    for(int u = 0; u < w.size(); u++)
+        if(w[u] == z)
+            return 1;
+    return 0;
 }
 
 
@@ -166,43 +175,67 @@ int main()
     dfaStates.push_back(eClosure[start]);
 
     i = 0;
-    for(auto t2 = dfaStates.begin(); t2 != dfaStates.end(); ++t2)
+    for(i; i < dfaStates.size(); i++)
     {
-        //j = 0;
+        j = 0;
         for(auto cr = alphabet.begin(); cr != alphabet.end(); ++cr)
         {
             set<int> aux;
             set<int>::iterator t3;
-            for(t3 = t2->begin(); t3 != t2->end(); ++t3)
+            for(t3 = dfaStates[i].begin(); t3 != dfaStates[i].end(); ++t3)
                 for(auto t4 = funct[*t3][j].begin(); t4 != funct[*t3][j].end(); ++t4)
                     aux.insert(*t4);
             
             dfa[i].push_back(aux);
-            dfaStates.insert(aux);
+            if(check(dfaStates, aux) == 0)
+                dfaStates.push_back(aux);
+            j++;
         }
-        i++;
     }
 
 
-    for(i = 0; i < nrStates; i++)
+    for(i = 0; i < dfaStates.size(); i++)
     {
-        //j = 0;
-        for(auto k = alphabet.begin(); k != alphabet.end(); ++k)
+        g << "Starea " << i << ": ";
+        set<int>::iterator t3;
+
+        int ok = 0;
+        for(t3 = dfaStates[i].begin(); t3 != dfaStates[i].end(); ++t3)
         {
-            set<int> aux;
-            for(auto t = eClosure[i].begin(); t!= eClosure[i].end(); ++t)
-            {
-                for(int t2 = 0; t2 < nrStates; t2++)
-                {
-                    if(find(M[*t][t2], *k) != -1)
-                    {    aux.insert(t2); }               //cout <<i << " " << *k << " " << *t << " " << t2 << endl; }
-                        
-                //cout << *t << " " << t2 << endl;
-                }
-            }
-            funct[i].push_back(aux);
-            //cout << endl;
+            g << *t3;
+            if(fin.find(*t3) != fin.end())
+                ok = 1;
         }
+        
+        if(i == 0)
+            g << " initiala";
+        
+        if(ok)
+            g << " finala";
+        g << '\n';
+    }
+    
+    g << '\n';
+
+    i = 0;
+    for(i; i < dfaStates.size(); i++)
+    {
+        j = 0;
+        for(auto cr = alphabet.begin(); cr != alphabet.end(); ++cr)
+        {
+            set<int>::iterator t3, t4;
+            for(t3 = dfaStates[i].begin(); t3 != dfaStates[i].end(); ++t3)
+                g << *t3;
+            
+            g << " ";
+
+            for(t4 = dfa[i][j].begin(); t4 != dfa[i][j].end(); ++t4)
+                g << *t4;
+
+            g << " " << *cr << "\n";
+            j++;
+        }
+        g << '\n';
     }
     return 0;
 }
