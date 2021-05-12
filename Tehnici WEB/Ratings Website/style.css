@@ -1,0 +1,56 @@
+html {
+    color: #1e1e1e;
+    font-family: Palatino, "Palatino LT STD", "Palatino Linotype", "Book Antiqua", Georgia, serif;
+}
+
+body {
+    background-color: #E8E8E8;
+}
+.upheader {
+    position: relative;
+    top: 2%;
+    left: 50%;
+    margin: 0 -5px;
+    margin-top: -3px;
+    margin-left: -100px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.uph1 {
+    margin: 0 5px;
+}
+
+.uph2 {
+    margin: 0 5px;
+    margin-left: -50px;
+    opacity: 0.5;
+}
+
+.linksbox {
+    margin: 0 5px;
+}
+
+.links__container {
+    float: left;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-left: -210px;
+    margin-right: 100px;
+    align-items: stretch;
+    width: 500px;
+    background-color:cadetblue;
+}
+
+.links__item {
+    background-color: cadetblue;
+    border: none;
+    color: white;
+    padding: 15px 50px 15px 13px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+  }
