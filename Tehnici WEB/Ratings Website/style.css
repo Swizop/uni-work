@@ -4,32 +4,39 @@ html {
 }
 
 body {
-    background-color: #E8E8E8;
+    background-color: #f0dccf;
 }
 .upheader {
-    position: relative;
-    top: 2%;
-    left: 50%;
-    margin: 0 -5px;
-    margin-top: -3px;
-    margin-left: -100px;
+    margin-left: -8px;
+    margin-top: -8px;
+    position: fixed;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content:center;
+    background-color: #fdf8f5;
+    background-image: url("images/NIO.png");
+    background-size: contain;
+    width: 100%;
+    text-align: center;
 }
 
 .uph1 {
-    margin: 0 5px;
+    margin: 0 auto;
+    color: #996688;
+    font-weight: 900;
+    font-size: 200%;
 }
 
 .uph2 {
-    margin: 0 5px;
-    margin-left: -50px;
-    opacity: 0.5;
+    margin: 0 auto;
+    opacity: 2;
+    font-weight: 900;
+    color: #996688;
 }
 
 .linksbox {
-    margin: 0 5px;
+    margin: 0 auto;
+    vertical-align: middle;
 }
 
 .links__container {
@@ -37,15 +44,13 @@ body {
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    margin-left: -210px;
-    margin-right: 100px;
     align-items: stretch;
     width: 500px;
-    background-color:cadetblue;
+    background-color:#996688;
 }
 
 .links__item {
-    background-color: cadetblue;
+    background-color: #996688;
     border: none;
     color: white;
     padding: 15px 50px 15px 13px;
@@ -54,3 +59,61 @@ body {
     display: inline-block;
     font-size: 16px;
   }
+
+
+.links__link {
+    background-color: #fdfaf8;
+    padding: 15px 32px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 18px;
+    border: 1px solid gray;
+    color: gray;
+    font-weight: bold;
+
+    cursor: pointer;
+    margin: 5px;
+}
+
+.links__link:active {
+    box-shadow: 0 5px #666;
+    transform: translateY(4px);
+}
+
+.links__link span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+}
+
+.links__link span:after {
+    content: '\00bb';
+    position: absolute;
+    opacity: 0;
+    top: 0;
+    right: -20px;
+    transition: 0.5s;
+}
+
+.links__link:hover span {
+    padding-right: 25px;
+}
+  
+.links__link:hover span:after {
+    opacity: 1;
+    right: 0;
+}
+
+.footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    background-color: white;
+    color: #996688;
+    text-align: center;
+}
+
+.footer__text {
+    margin: 0;
+}
