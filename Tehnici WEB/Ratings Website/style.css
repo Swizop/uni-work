@@ -117,3 +117,8 @@ body {
 .footer__text {
     margin: 0;
 }
+
+.main {
+    position: fixed;
+    top: 200px;
+}

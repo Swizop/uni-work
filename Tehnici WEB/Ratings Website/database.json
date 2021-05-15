@@ -1,0 +1,39 @@
+{
+    "dogs": [
+      {
+        "id": 1,
+        "name": "John Smith",
+        "rating": 5,
+        "review": "Very good and nice. I like it.",
+        "img": "https://images.dog.ceo/breeds/affenpinscher/n02110627_8099.jpg"
+      },
+      {
+        "id": 2,
+        "name": "AKITA",
+        "rating": 3,
+        "review": "Okay.",
+        "img": "https://images.dog.ceo//breeds//akita//An_Akita_Inu_resting.jpg"
+      },
+      {
+        "id": 3,
+        "name": "CHIHUAHUA",
+        "rating": 1,
+        "review": "Bad.",
+        "img": "https://images.dog.ceo/breeds/chihuahua/n02085620_7613.jpg"
+      },
+      {
+        "id": 4,
+        "name": "LHASA",
+        "rating": 5,
+        "review": "Amazing.",
+        "img": "https://images.dog.ceo/breeds/lhasa/n02098413_7358.jpg"
+      },
+      {
+        "id": 5,
+        "name": "HOUND",
+        "rating": 5,
+        "review": "Super services!",
+        "img": "https://images.dog.ceo/breeds/hound-afghan/n02088094_2626.jpg"
+      }
+    ]
+  }
