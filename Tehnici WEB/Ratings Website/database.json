@@ -1,5 +1,5 @@
 {
-    "dogs": [
+    "posts": [
       {
         "id": 1,
         "name": "John Smith",
@@ -9,30 +9,38 @@
       },
       {
         "id": 2,
-        "name": "AKITA",
+        "name": "Niq Niq",
         "rating": 3,
         "review": "Okay.",
         "img": "https://images.dog.ceo//breeds//akita//An_Akita_Inu_resting.jpg"
       },
       {
         "id": 3,
-        "name": "CHIHUAHUA",
+        "name": "Elon Musk",
         "rating": 1,
         "review": "Bad.",
         "img": "https://images.dog.ceo/breeds/chihuahua/n02085620_7613.jpg"
       },
       {
         "id": 4,
-        "name": "LHASA",
+        "name": "Tucudean George",
         "rating": 5,
         "review": "Amazing.",
         "img": "https://images.dog.ceo/breeds/lhasa/n02098413_7358.jpg"
       },
       {
         "id": 5,
-        "name": "HOUND",
+        "name": "Popa Hatz Dorian",
         "rating": 5,
         "review": "Super services!",
+        "img": "https://images.dog.ceo/breeds/hound-afghan/n02088094_2626.jpg"
+      }
+      ,
+      {
+        "id": 6,
+        "name": "Gicu Gheorghe",
+        "rating": 3,
+        "review": "Nah nah nah",
         "img": "https://images.dog.ceo/breeds/hound-afghan/n02088094_2626.jpg"
       }
     ]

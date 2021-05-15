@@ -5,6 +5,7 @@ html {
 
 body {
     background-color: #f0dccf;
+    overflow: scroll;
 }
 .upheader {
     margin-left: -8px;
