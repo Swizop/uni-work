@@ -1,7 +1,12 @@
 let main = document.getElementsByClassName("main")[0];
+let modal = document.getElementsByClassName("modalPost")[0];
+let close = document.getElementsByClassName("close")[0];
+let done = document.getElementsByClassName("done")[0];
 
 newPost = document.createElement("button");
 newPost.innerHTML = "Create a New Post";
+newPost.setAttribute("onclick", "openModal();");
+done.setAttribute("onclick", "makeNewPost();")
 main.appendChild(newPost);
 
 postsContainer = document.createElement("div");
@@ -68,7 +73,7 @@ function renderPosts(posts) {
   
     */
 
-    for (let p in posts) {
+    for (let p in posts.reverse()) {
       article = document.createElement('article');
       txt = document.createElement('p');
       edit = document.createElement('button');
@@ -100,3 +105,40 @@ function renderPosts(posts) {
       /*input = document.createElement("input");*/
     }
   }
+
+
+ function openModal()
+  {
+    modal.style.display="block";
+  }
+
+  async function makeNewPost() {
+    let np = {
+        name: document.getElementById("yName").value,
+        car: document.getElementById("models").value,
+        rating: document.getElementById("stars").value,
+        review: document.getElementsByClassName("textarea")[0].value
+      };
+      let response = await fetch('http://localhost:3000/posts', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(np)
+      });
+      let result = await response.json();
+      console.log(result);
+
+      modal.style.display="none";
+  }
+
+  close.onclick = function() {
+      modal.style.display="none";
+  }
+
+  window.onclick = function(event) {
+      if(event.target == modal)
+      { modal.style.display="none";}
+  }
+
+  
