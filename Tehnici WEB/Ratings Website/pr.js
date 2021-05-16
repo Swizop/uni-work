@@ -44,35 +44,6 @@ function showPosts() {
 function renderPosts(posts) {
     postsContainer.innerHTML = "";      //innerText
 
-    /*
-    let input1 = document.createElement("input");
-    input1.setAttribute("type", "text");
-    input1.setAttribute("id", "input1");
-    input1.setAttribute("placeholder", "Name");
-  
-    let input2 = document.createElement("input");
-    input2.setAttribute("type", "text");
-    input2.setAttribute("id", "input2");
-    input2.setAttribute("placeholder", "Link");
-  
-    body.appendChild(input1);
-    body.appendChild(input2);
-  
-    let button = document.createElement("button");
-    button.setAttribute("id", "but");
-    button.innerText = "Add";
-    button.setAttribute("onclick", "adddog();");
-    body.append(button);
-  
-    let button1 = document.createElement("button");
-    button1.className="upd";
-    button1.setAttribute("disabled", "");
-    button1.innerText = "Update";
-    button1.setAttribute("onclick", "editdog(this.id);");
-    body.append(button1);
-  
-    */
-
     for (let p in posts.reverse()) {
       article = document.createElement('article');
       txt = document.createElement('p');
@@ -81,11 +52,11 @@ function renderPosts(posts) {
   
       edit.innerText = "edit";
       edit.setAttribute("id", posts[p].id);
-      edit.setAttribute("onclick", "placeinfo(this.id);");
+      edit.setAttribute("onclick", "openModalEdit(" + posts[p].id + ");");
   
       del.innerText = "delete";
       del.setAttribute("id", posts[p].id);
-      del.setAttribute("onclick", "deldog(this.id);");
+      del.setAttribute("onclick", "delart(" + posts[p].id + ");");
   
       node = document.createTextNode(posts[p].review);
       txt.appendChild(node);
@@ -99,7 +70,11 @@ function renderPosts(posts) {
       article.appendChild(edit);
       article.appendChild(del);
 
-      txt.setAttribute("style", "font-size:100px;");
+      article.className = "art" + posts[p].id;
+      who.className = "art" + posts[p].id;
+      txt.className = "art" + posts[p].id;
+      
+      txt.setAttribute("style", "font-size:50px;");
       article.setAttribute("style", "display:flex; align-items:center;");
       postsContainer.appendChild(article);
       /*input = document.createElement("input");*/
@@ -134,11 +109,82 @@ function renderPosts(posts) {
 
   close.onclick = function() {
       modal.style.display="none";
+      let t = document.getElementById("modalTitle");
+      t.innerText = "Create a New Post";
+      done.setAttribute("onclick", "makeNewPost();");
+
+      document.getElementById("yName").value = '';
+      document.getElementById("models").value = '';
+      document.getElementById("stars").value = '';
+      document.getElementsByClassName("textarea")[0].value = '';
   }
 
   window.onclick = function(event) {
       if(event.target == modal)
-      { modal.style.display="none";}
+      { modal.style.display="none";
+      let t = document.getElementById("modalTitle");
+      t.innerText = "Create a New Post";
+      done.setAttribute("onclick", "makeNewPost();");
+
+      document.getElementById("yName").value = '';
+      document.getElementById("models").value = '';
+      document.getElementById("stars").value = '';
+      document.getElementsByClassName("textarea")[0].value = '';
+        }
   }
 
   
+  async function openModalEdit(i)
+  {
+    modal.style.display="block";
+    let t = document.getElementById("modalTitle");
+    t.innerText = "Edit Post";
+    done.setAttribute("onclick", "placeinfo(" + i + ");")
+
+    document.getElementById("yName").value = document.getElementsByClassName("art" + i)[1].innerHTML;
+    //document.getElementById("models").value = result.car;
+    //document.getElementById("stars").value = result.rating;
+    document.getElementsByClassName("textarea")[0].value = document.getElementsByClassName("art" + i)[2].innerHTML;
+
+  }
+
+  async function placeinfo(i){
+    console.log(i);
+
+    let np = {
+        name: document.getElementById("yName").value,
+        car: document.getElementById("models").value,
+        rating: document.getElementById("stars").value,
+        review: document.getElementsByClassName("textarea")[0].value
+      };
+    let response = await fetch('http://localhost:3000/posts/' + i, {
+        method: 'PUT',
+        headers: {
+        'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(np)
+    });
+
+    let result = await response.json();
+    console.log(result);
+
+    modal.style.display = "none";
+    document.getElementById("yName").value = '';
+    document.getElementById("models").value = '';
+    document.getElementById("stars").value = '';
+    document.getElementsByClassName("textarea")[0].value = '';
+
+    let t = document.getElementById("modalTitle");
+    t.innerText = "Create a New Post";
+    done.setAttribute("onclick", "makeNewPost();");
+  }
+
+
+  async function delart(i) {
+    let response = await fetch('http://localhost:3000/posts/' + i, {
+      method: 'DELETE'
+    });
+  
+    let result = await response.json();
+    console.log(result);
+  }
