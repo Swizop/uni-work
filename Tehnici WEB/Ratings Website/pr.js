@@ -13,10 +13,11 @@ done.setAttribute("onclick", "makeNewPost();")
 main.appendChild(newPost);
 
 postsContainer = document.createElement("div");
+postsContainer.className = "postsContainer";
 postsContainer.style.display = "flex";
 postsContainer.style.flexDirection = "column";
 postsContainer.style.overflow = "auto";
-postsContainer.style.height = "653px";
+postsContainer.style.height = "595px";
 postsContainer.style.width = "2000px";
 main.appendChild(postsContainer);
 
@@ -64,14 +65,14 @@ function renderPosts(posts) {
       node = document.createTextNode(posts[p].review);
       txt.appendChild(node);
 
-      who = document.createElement('p');
+      who = document.createElement('div');
       node = document.createTextNode(posts[p].name);
       who.appendChild(node);
 
-      what = document.createElement('p');
+      what = document.createElement('div');
       node = document.createTextNode(posts[p].car);
       what.appendChild(node);
-
+        
       nrOfStars = parseInt(posts[p].rating);
       var j = 1;
       starContainer = document.createElement('div');
@@ -93,22 +94,30 @@ function renderPosts(posts) {
         starContainer.appendChild(star);
         j+=1;
       }
+      
+      firstLine = document.createElement('div');
+      firstLine.className = "firstLine";
+      firstLine.appendChild(who);
+      firstLine.appendChild(what);
 
-      article.appendChild(who);
-      article.appendChild(what);
+      lastLine = document.createElement('div');
+      lastLine.className = "lastLine";
+      lastLine.appendChild(edit);
+      lastLine.appendChild(del);
+      
+      article.appendChild(firstLine);
       article.appendChild(starContainer);
       article.appendChild(txt);
-      article.appendChild(edit);
-      article.appendChild(del);
+      article.appendChild(lastLine);
 
       article.className = "art" + posts[p].id + " independentReview";
-      who.className = "art" + posts[p].id;
-      txt.className = "art" + posts[p].id;
-      what.className = "art" + posts[p].id;
+      who.className = "art" + posts[p].id + " who";
+      txt.className = "art" + posts[p].id + " txt";
+      what.className = "art" + posts[p].id + " what";
       starContainer.className += " art" + posts[p].id;
       
-      txt.setAttribute("style", "font-size:50px;");
-      article.setAttribute("style", "display:flex; align-items:center;");
+      
+      article.setAttribute("style", "display:flex;");
       postsContainer.appendChild(article);
       /*input = document.createElement("input");*/
     }

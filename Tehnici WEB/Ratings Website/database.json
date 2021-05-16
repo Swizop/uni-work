@@ -1,13 +1,6 @@
 {
   "posts": [
     {
-      "id": 1,
-      "name": "John Smith",
-      "rating": 5,
-      "review": "Very good and nice. I like it.",
-      "car": "ET7"
-    },
-    {
       "name": "Elon Musk",
       "car": "EC6",
       "rating": "2",
@@ -22,18 +15,25 @@
       "id": 5
     },
     {
-      "name": "selly",
-      "car": "ET7",
-      "rating": "2",
-      "review": "niceeee",
-      "id": 7
-    },
-    {
       "name": "Georgian Barz",
       "car": "EC6",
-      "rating": "2",
+      "rating": "3",
       "review": "Bad bad bad!!",
       "id": 8
+    },
+    {
+      "name": "Bahoi DAniel",
+      "car": "ES8",
+      "rating": "1",
+      "review": "Not bad but not great",
+      "id": 9
+    },
+    {
+      "name": "John Gion",
+      "car": "ES8",
+      "rating": "2",
+      "review": "horrible",
+      "id": 10
     }
   ]
 }

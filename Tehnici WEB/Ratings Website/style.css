@@ -185,3 +185,62 @@ body {
     font-size: 2em;
     padding: 0.5em 2em;
 }
+
+.firstLine {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch; 
+    width: 100%;  
+}
+
+.postsContainer {
+    left: 0%;
+    align-items: center;
+    position: relative;
+    right: 50%;
+    /* align-items: flex-start; */
+    /* justify-content: space-between; */
+}
+
+.independentReview {
+    position: relative;
+    padding: 50px;
+    width: 70em;
+    border: 20px solid #f0dccf;
+    background-color: #fefefe;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: space-between;
+    left: 0%;
+}
+
+
+.fa {
+    position: relative;
+    /* right: 700%; */
+}
+
+
+.who {
+    font-weight: bolder;
+    font-size: 150%;
+}
+
+.what {
+    color: #996688;
+    font-weight: bolder;
+    font-size: 140%;
+}
+
+.txt {
+    font-size: 120%;
+}
+
+.lastLine {
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+}
