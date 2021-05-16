@@ -6,6 +6,9 @@ let done = document.getElementsByClassName("done")[0];
 newPost = document.createElement("button");
 newPost.innerHTML = "Create a New Post";
 newPost.setAttribute("onclick", "openModal();");
+newPost.className = "newPostButt links__link";
+newPost.setAttribute("id", "newPostButt");
+
 done.setAttribute("onclick", "makeNewPost();")
 main.appendChild(newPost);
 
@@ -98,7 +101,7 @@ function renderPosts(posts) {
       article.appendChild(edit);
       article.appendChild(del);
 
-      article.className = "art" + posts[p].id;
+      article.className = "art" + posts[p].id + " independentReview";
       who.className = "art" + posts[p].id;
       txt.className = "art" + posts[p].id;
       what.className = "art" + posts[p].id;

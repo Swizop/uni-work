@@ -15,13 +15,6 @@
       "id": 3
     },
     {
-      "id": 4,
-      "name": "Tucudean George",
-      "rating": 5,
-      "review": "Amazing.",
-      "car": "ES8"
-    },
-    {
       "name": "Popa Hatz Dorian",
       "car": "ET7",
       "rating": "5",
@@ -31,9 +24,16 @@
     {
       "name": "selly",
       "car": "ET7",
-      "rating": "4",
-      "review": "niceeeeeeee",
+      "rating": "2",
+      "review": "niceeee",
       "id": 7
+    },
+    {
+      "name": "Georgian Barz",
+      "car": "EC6",
+      "rating": "2",
+      "review": "Bad bad bad!!",
+      "id": 8
     }
   ]
 }
