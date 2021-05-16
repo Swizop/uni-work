@@ -244,3 +244,27 @@ body {
     flex-direction: row;
     justify-content: space-between;
 }
+
+
+.modelContainer {
+    top:10%;    
+    display: flex;
+    width: 100%;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+
+.userRatingContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.overallRating {
+    color: #996688;
+    font-weight: bolder;
+    font-size: 140%;
+}

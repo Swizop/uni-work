@@ -230,3 +230,70 @@ function renderPosts(posts) {
     let result = await response.json();
     console.log(result);
   }
+
+
+
+//move to different page
+
+b1 = document.getElementById("et7-link");
+b1.setAttribute("onclick", "move(\"ET7\");");
+b2 = document.getElementById("ec6-link");
+b2.setAttribute("onclick", "move(\"EC6\");");
+b3 = document.getElementById("es8-link");
+b3.setAttribute("onclick", "move(\"ES8\");");
+
+mainHTML = main.innerHTML;
+head = document.getElementsByClassName("uph1")[0];
+head.style.cursor = "pointer";
+head.setAttribute("onclick", "setMain();");
+
+function setMain()
+{
+    location.reload();
+}
+
+
+function move(i)
+{
+    main.innerHTML = "";
+
+
+    w = document.createElement('p');
+    w.innerText = "The " + i + " Model";
+    w.style.fontSize="2em";
+    w.style.fontWeight="bolder";
+    w.style.position="relative";
+    w.style.left="45%";
+    w.style.color="#996688";
+    main.appendChild(w);
+    
+    modelContainer = document.createElement('div');
+    modelContainer.className = "modelContainer";
+    main.appendChild(modelContainer);
+
+    userRatingContainer = document.createElement('div');
+    userRatingContainer.className = "userRatingContainer";
+    modelContainer.appendChild(userRatingContainer);
+
+    userRating = document.createElement('p');
+    userRating.innerText = "Overall Rating";
+    userRating.className = "overallRating";
+    userRatingContainer.appendChild(userRating);
+
+    
+
+    img = document.createElement('img');
+    if(i == "ET7")
+        img.src = "https://scontent.fotp3-2.fna.fbcdn.net/v/t1.6435-9/137625796_1880152195467499_6542052258382626647_n.jpg?_nc_cat=106&ccb=1-3&_nc_sid=973b4a&_nc_ohc=45oJt4ISXCkAX_rwdcq&_nc_ht=scontent.fotp3-2.fna&oh=e0fa46619b647ca07f58530d279be3af&oe=60C5F460";
+        else
+            if(i == "EC6")
+                img.src = "https://cdn.motor1.com/images/mgl/9Llvg/s1/nio-ec6-white-exterior.jpg";
+            else
+                img.src = "https://st4.depositphotos.com/21607914/23505/i/1600/depositphotos_235050660-stock-photo-nio-es8-nextev-car-display.jpg";
+
+    img.style.maxWidth = "50%";
+    img.style.height="auto";
+    img.style.position="relative"; 
+    img.style.right="0";
+    modelContainer.appendChild(img);
+}

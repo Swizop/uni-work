@@ -22,7 +22,7 @@
       "id": 8
     },
     {
-      "name": "Bahoi DAniel",
+      "name": "Bahoi Daniel",
       "car": "ES8",
       "rating": "1",
       "review": "Not bad but not great",
@@ -31,9 +31,16 @@
     {
       "name": "John Gion",
       "car": "ES8",
-      "rating": "2",
+      "rating": "3",
       "review": "horrible",
       "id": 10
+    },
+    {
+      "name": "Niqas",
+      "car": "ET7",
+      "rating": "1",
+      "review": "aaaaaa",
+      "id": 11
     }
   ]
 }
