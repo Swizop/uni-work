@@ -8,18 +8,11 @@
       "car": "ET7"
     },
     {
-      "id": 2,
-      "name": "Niq Niq",
-      "rating": 3,
-      "review": "Okay.",
-      "car": "EC6"
-    },
-    {
-      "id": 3,
       "name": "Elon Musk",
-      "rating": 1,
+      "car": "EC6",
+      "rating": "2",
       "review": "Bad.",
-      "car": "ES8"
+      "id": 3
     },
     {
       "id": 4,
@@ -29,18 +22,18 @@
       "car": "ES8"
     },
     {
-      "id": 5,
       "name": "Popa Hatz Dorian",
-      "rating": 5,
+      "car": "ET7",
+      "rating": "5",
       "review": "Super services!",
-      "car": "ES8"
+      "id": 5
     },
     {
-      "id": 6,
-      "name": "Gicu Gheorghe",
-      "rating": 3,
-      "review": "Nah nah nah",
-      "car": "ES8"
+      "name": "selly",
+      "car": "ET7",
+      "rating": "4",
+      "review": "niceeeeeeee",
+      "id": 7
     }
   ]
 }

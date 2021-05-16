@@ -173,3 +173,8 @@ body {
 .mInput {
     margin-bottom: 20px;
 }
+
+
+.checked {
+    color: orange;
+}

@@ -65,7 +65,35 @@ function renderPosts(posts) {
       node = document.createTextNode(posts[p].name);
       who.appendChild(node);
 
+      what = document.createElement('p');
+      node = document.createTextNode(posts[p].car);
+      what.appendChild(node);
+
+      nrOfStars = parseInt(posts[p].rating);
+      var j = 1;
+      starContainer = document.createElement('div');
+      starContainer.className = posts[p].rating + " starContainer";
+      
+      
+      while(j <= nrOfStars)
+      {
+        star = document.createElement('span');
+        star.className = "fa fa-star checked";
+        starContainer.appendChild(star);
+        j+=1;
+      }
+
+      while(j <= 5)
+      {
+        star = document.createElement('span');
+        star.className = "fa fa-star";
+        starContainer.appendChild(star);
+        j+=1;
+      }
+
       article.appendChild(who);
+      article.appendChild(what);
+      article.appendChild(starContainer);
       article.appendChild(txt);
       article.appendChild(edit);
       article.appendChild(del);
@@ -73,6 +101,8 @@ function renderPosts(posts) {
       article.className = "art" + posts[p].id;
       who.className = "art" + posts[p].id;
       txt.className = "art" + posts[p].id;
+      what.className = "art" + posts[p].id;
+      starContainer.className += " art" + posts[p].id;
       
       txt.setAttribute("style", "font-size:50px;");
       article.setAttribute("style", "display:flex; align-items:center;");
@@ -142,9 +172,9 @@ function renderPosts(posts) {
     done.setAttribute("onclick", "placeinfo(" + i + ");")
 
     document.getElementById("yName").value = document.getElementsByClassName("art" + i)[1].innerHTML;
-    //document.getElementById("models").value = result.car;
-    //document.getElementById("stars").value = result.rating;
-    document.getElementsByClassName("textarea")[0].value = document.getElementsByClassName("art" + i)[2].innerHTML;
+    document.getElementById("models").value = document.getElementsByClassName("art" + i)[2].innerHTML;
+    document.getElementById("stars").value = document.getElementsByClassName("art" + i)[3].className[0];
+    document.getElementsByClassName("textarea")[0].value = document.getElementsByClassName("art" + i)[4].innerHTML;
 
   }
 
