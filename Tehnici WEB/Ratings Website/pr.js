@@ -48,6 +48,14 @@ function showPosts() {
 function renderPosts(posts) {
     postsContainer.innerHTML = "";      //innerText
 
+    localStorage.setItem("ET7", "0");           //sum of stars
+    localStorage.setItem("EC6", "0");
+    localStorage.setItem("ES8", "0");
+
+    localStorage.setItem("ET7nr", "0");         //number of ratings given for each car
+    localStorage.setItem("EC6nr", "0");
+    localStorage.setItem("ES8nr", "0");
+
     for (let p in posts.reverse()) {
       article = document.createElement('article');
       txt = document.createElement('p');
@@ -79,6 +87,22 @@ function renderPosts(posts) {
       starContainer.className = posts[p].rating + " starContainer";
       
       
+      if(posts[p].car == "ET7")
+      {
+        localStorage.ET7 = parseInt(localStorage.ET7) + nrOfStars;
+        localStorage.ET7nr = parseInt(localStorage.ET7nr) + 1;
+      }
+      else if (posts[p].car == "EC6")
+      {
+        localStorage.EC6 = parseInt(localStorage.EC6) + nrOfStars;
+        localStorage.EC6nr = parseInt(localStorage.EC6nr) + 1;
+      }
+      else
+      {
+        localStorage.ES8 = parseInt(localStorage.ES8) + nrOfStars;
+        localStorage.ES8nr = parseInt(localStorage.ES8nr) + 1;
+      }
+
       while(j <= nrOfStars)
       {
         star = document.createElement('span');
@@ -119,7 +143,6 @@ function renderPosts(posts) {
       
       article.setAttribute("style", "display:flex;");
       postsContainer.appendChild(article);
-      /*input = document.createElement("input");*/
     }
   }
 
@@ -275,12 +298,63 @@ function move(i)
     userRatingContainer.className = "userRatingContainer";
     modelContainer.appendChild(userRatingContainer);
 
-    userRating = document.createElement('p');
-    userRating.innerText = "Overall Rating";
-    userRating.className = "overallRating";
-    userRatingContainer.appendChild(userRating);
+    userRating = document.createElement('div');
+    userRating.className = "userRating";
 
-    
+    userRatingP = document.createElement('p');
+    userRatingP.innerText = "Overall Rating";
+    userRatingP.className = "overallRating";
+    userRating.appendChild(userRatingP);
+
+    if(i == "ET7")
+      {
+        avg = (parseFloat(localStorage.ET7) / parseFloat(localStorage.ET7nr)).toFixed(2);
+        nr = parseInt(localStorage.ET7nr);
+      }
+      else if (i == "EC6")
+      {
+        avg = (parseFloat(localStorage.EC6) / parseFloat(localStorage.EC6nr)).toFixed(2);
+        nr = parseInt(localStorage.EC6nr);
+      }
+      else
+      {
+        avg = (parseFloat(localStorage.ES8) / parseFloat(localStorage.ES8nr)).toFixed(2);
+        nr = parseInt(localStorage.ES8nr);
+      }
+
+    if(nr == 0)
+      avg = 0;
+
+    var j = 1;
+    userStarContainer = document.createElement('div');
+    userStarContainer.className = "starContainer userStarContainer";
+
+    while(j <= avg)
+      {
+        star = document.createElement('span');
+        star.className = "fa fa-star checked";
+        userStarContainer.appendChild(star);
+        j+=1;
+      }
+
+      while(j <= 5)
+      {
+        star = document.createElement('span');
+        star.className = "fa fa-star";
+        userStarContainer.appendChild(star);
+        j+=1;
+      }
+
+    userRating.appendChild(userStarContainer);
+
+    userRatingContainer.appendChild(userRating);
+    avgP = document.createElement('p');
+    if(nr > 0)
+        avgP.innerText = avg + " average based on " + nr + " ratings.";
+    else
+        avgP.innerText = "There are currently no ratings for this model.";
+
+    userRatingContainer.appendChild(avgP);
 
     img = document.createElement('img');
     if(i == "ET7")

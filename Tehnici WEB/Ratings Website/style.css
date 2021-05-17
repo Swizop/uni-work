@@ -258,8 +258,10 @@ body {
 
 .userRatingContainer {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
+    background-color: #fefefe;
+    width: 25em;
 }
 
 
@@ -268,3 +270,26 @@ body {
     font-weight: bolder;
     font-size: 140%;
 }
+
+
+.userRating {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+
+.userStarContainer {
+    position: relative;
+    top: 1.70em;
+    right: 0.5em;
+}
+
+
+.overallRating {
+    position: relative;
+    left: 0.5em;
+}
+

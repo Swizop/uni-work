@@ -22,25 +22,39 @@
       "id": 8
     },
     {
-      "name": "Bahoi Daniel",
+      "name": "Batoi Daniel",
       "car": "ES8",
       "rating": "1",
       "review": "Not bad but not great",
       "id": 9
     },
     {
-      "name": "John Gion",
+      "name": "John Popa",
       "car": "ES8",
-      "rating": "3",
+      "rating": "2",
       "review": "horrible",
       "id": 10
     },
     {
-      "name": "NMW yani",
+      "name": "The Mailman",
       "car": "ET7",
-      "rating": "1",
-      "review": "aaaaaa",
-      "id": 11
+      "rating": "2",
+      "review": "Xpeng is way better.",
+      "id": 12
+    },
+    {
+      "name": "Volentir Toma",
+      "car": "ES8",
+      "rating": "5",
+      "review": "thinking of buying 3 more",
+      "id": 13
+    },
+    {
+      "name": "Cornel Sava",
+      "car": "EC6",
+      "rating": "5",
+      "review": "I'll keep on buying NIO cars for life!!",
+      "id": 14
     }
   ]
 }
