@@ -403,7 +403,7 @@ class AtlasZoologic
     T _titlu;
     int _nrPagini;
     list<Animal<T>*> _file;
-    const T _editura = "MatSRL";
+    const T _editura;
 
     public:
         T get_editura() const                                           //FUNCTIE CONST
@@ -417,7 +417,7 @@ class AtlasZoologic
 
 
         AtlasZoologic(T titlu = "", int nr = 0, list<Animal<T>*> l = list<Animal<T>*>()): 
-            _titlu(titlu), _nrPagini(nr) {
+            _titlu(titlu), _nrPagini(nr), _editura("MattSRL") {
                 for(auto i = l.begin(); i != l.end(); ++i)
                 {
                     Nevertebrat<T> *p1 = dynamic_cast<Nevertebrat<T>*>(*i);                                     //DOWNCASTING

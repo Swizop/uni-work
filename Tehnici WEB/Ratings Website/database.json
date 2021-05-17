@@ -9,7 +9,7 @@
     },
     {
       "name": "Popa Hatz Dorian",
-      "car": "ET7",
+      "car": "EC6",
       "rating": "5",
       "review": "Super services!",
       "id": 5
@@ -29,20 +29,6 @@
       "id": 9
     },
     {
-      "name": "John Popa",
-      "car": "ES8",
-      "rating": "2",
-      "review": "horrible",
-      "id": 10
-    },
-    {
-      "name": "The Mailman",
-      "car": "ET7",
-      "rating": "2",
-      "review": "Xpeng is way better.",
-      "id": 12
-    },
-    {
       "name": "Volentir Toma",
       "car": "ES8",
       "rating": "5",
@@ -52,9 +38,23 @@
     {
       "name": "Cornel Sava",
       "car": "EC6",
-      "rating": "5",
-      "review": "I'll keep on buying NIO cars for life!!",
+      "rating": "4",
+      "review": "I'll keep on buying NIO cars for life!",
       "id": 14
+    },
+    {
+      "name": "Alexxxxxxxx",
+      "car": "ES8",
+      "rating": "3",
+      "review": "Not enough!!!!!!!!!!!",
+      "id": 16
+    },
+    {
+      "name": "Alexandru",
+      "car": "ET7",
+      "rating": "5",
+      "review": "Best car",
+      "id": 17
     }
   ]
 }
