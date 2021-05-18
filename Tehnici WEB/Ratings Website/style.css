@@ -199,6 +199,11 @@ body {
     align-items: center;
     position: relative;
     right: 50%;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+    height: 595px;
+    width: 2000px;
     /* align-items: flex-start; */
     /* justify-content: space-between; */
 }
@@ -293,3 +298,172 @@ body {
     left: 0.5em;
 }
 
+
+.theModel {
+    font-size: 2em;
+    left: 45%;
+}
+
+.carPhoto {
+    max-width: 50%;
+}
+
+
+
+
+@media (max-width: 1444px)
+{
+    body { width: 100%;}
+    .main { width: 100%;}
+
+    .postsContainer { width: 100%;
+         }
+    .independentReview { width: 70%;}
+
+    #newPostButt { width: 50%;
+    font-size: 1.5em;
+    left: 27%;}
+
+    .uph1 {
+        font-size: 150%;
+    }
+    .uph2 {
+        font-size: 130%;
+    }
+    .links__container {
+        width: 50%;
+    } 
+
+    .links__item {
+        width: 50%;
+        padding: 8px 25px 13px 5px;
+    }
+
+    .modalPost {
+        font-size: 80%;
+    }
+
+    .theModel {
+        font-size: 1.5em;
+        left: 38%;
+    }
+}
+
+
+@media (max-width: 1280px)
+{
+    body { width: 100%;}
+    .main { width: 100%;}
+
+    .postsContainer { width: 100%;
+         }
+    .independentReview { width: 70%; border: 15px solid #f0dccf;}
+
+    #newPostButt { width: 50%;
+    font-size: 1.5em;
+    left: 27%;}
+
+    .uph1 {
+        font-size: 150%;
+    }
+    .uph2 {
+        font-size: 130%;
+    }
+    .links__container {
+        width: 50%;
+    } 
+
+    .links__item {
+        width: 50%;
+        padding: 8px 25px 13px 5px;
+    }
+
+    .modalPost {
+        font-size: 80%;
+    }
+
+    .theModel {
+        font-size: 1.5em;
+        left: 38%;
+    }
+    
+    .postsContainer { height: 480px;}
+}
+
+@media (max-width: 768px)
+{
+    .uph1 {
+        font-size: 110%;
+    }
+    .uph2 {
+        font-size: 110%;
+    }
+
+    .links__container {
+        width: auto;
+        justify-content: none;
+    } 
+
+    .links__item {
+        width: 31%;
+        padding: 0px 5px 5px 0px;
+    }
+
+    .links__link {
+        padding: 11px 25px;
+        font-size: 12px;
+    }
+
+    .modalPost {
+        font-size: 70%;
+    }
+
+    .modalPostContent {
+        position: relative;
+        top: 120px;
+        width: 70%;
+    }
+
+    .modalPostTitle {
+        font-size: 140%;
+    }
+
+    .theModel {
+        font-size: 1.2em;
+        left: 38%;
+    }
+
+    .independentReview { width: 50%; height: 50%;
+    border: 7px solid #f0dccf;}
+
+    .modelContainer {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .userRatingContainer {
+        max-width: 70%;
+        font-size: 80%;
+    }
+
+    .carPhoto {
+        max-width: 80%;
+    }
+
+    .firstLine {
+        font-size: 75%;
+    }
+
+    #newPostButt { width: 40%;
+        font-size: 1em;
+        left: 30%;
+        bottom: 30px;}
+
+    .txt {
+        font-size: 90%;
+    }
+
+    .postsContainer { height: 500px;}
+
+    .footer { font-size: 90%;}
+}

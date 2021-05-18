@@ -14,11 +14,6 @@ main.appendChild(newPost);
 
 postsContainer = document.createElement("div");
 postsContainer.className = "postsContainer";
-postsContainer.style.display = "flex";
-postsContainer.style.flexDirection = "column";
-postsContainer.style.overflow = "auto";
-postsContainer.style.height = "595px";
-postsContainer.style.width = "2000px";
 main.appendChild(postsContainer);
 
 showPosts();
@@ -283,10 +278,9 @@ function move(i)
 
     w = document.createElement('p');
     w.innerText = "The " + i + " Model";
-    w.style.fontSize="2em";
+    w.className = "theModel";
     w.style.fontWeight="bolder";
     w.style.position="relative";
-    w.style.left="45%";
     w.style.color="#996688";
     main.appendChild(w);
     
@@ -365,9 +359,9 @@ function move(i)
             else
                 img.src = "https://st4.depositphotos.com/21607914/23505/i/1600/depositphotos_235050660-stock-photo-nio-es8-nextev-car-display.jpg";
 
-    img.style.maxWidth = "50%";
     img.style.height="auto";
     img.style.position="relative"; 
     img.style.right="0";
+    img.className = "carPhoto";
     modelContainer.appendChild(img);
 }
