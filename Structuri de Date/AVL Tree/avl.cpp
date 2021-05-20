@@ -157,12 +157,77 @@ void inord(Node* curr)
 }
 
 
+Node* srch(Node* curr, int v)
+{
+    if(curr == NULL || curr->val == v)
+        return curr;
+    if(curr->val < v)
+        return srch(curr->r, v);
+    return srch(curr->l, v);
+}
+
+
+Node* succ(Node* root, Node* t)
+{
+    Node* i;
+    if(t->r != NULL)
+    {
+        i = t->r;
+        while(i->l != NULL)
+            i = i->l;
+        return i;
+    }
+
+    Node* res = t;
+    i = root;
+    while(i != NULL && i->val != t->val)
+        if(i->val > t->val)
+        {
+            res = i;
+            i = i->l;
+        }
+        else
+            i = i->r;
+    
+    return res;
+}
+
+
+Node* pred(Node* root, Node* t)
+{
+    Node* i;
+    if(t->l != NULL)
+    {
+        i = t->l;
+        while(i->r != NULL)
+            i = i->r;
+        return i;
+    }
+
+    Node* res = t;
+    i = root;
+    while(i != NULL && i->val != t->val)
+        if(i->val > t->val)
+            i = i->l;
+        else
+        {
+            res = i;
+            i = i->r;
+        }
+    return res;
+}
+
 void showOpt()
 {
     cout << "1. Create an entirely new AVL\n";
     cout << "2. Print preorder traversal of AVL\n";
     cout << "3. Print the values in sorted order\n";
     cout << "4. Insert a single value into the AVL\n";
+    cout << "5. Search for a specific value\n";
+    cout << "6. Search for successor of a specific value\n";
+    cout << "7. Search for predecessor of a specific value\n";
+    cout << "8. Delete node by value\n";
+    cout << "9. Exit program.\n";
 }
 
 
@@ -210,8 +275,55 @@ int main()
                 cin >> x;
                 AVL = insert(AVL, x);
                 break;
-            default:
+
+            case 5:
+                cout << "Value to search for:\n";
+                cin >> x;
+                if(srch(AVL, x) != NULL)
+                    cout << x << " is in the AVL.\n";
+                else
+                    cout << x << " is not in the AVL.\n";
+                break;
+
+            case 6:
+            {
+                cout << "Value you want the successor of:\n";
+                cin >> x;
+                Node* w = srch(AVL, x);
+                Node* r = succ(AVL, w);
+                if(r == w)
+                    cout << "The node has no successor.\n";
+                else
+                    cout << r->val << '\n';
+                break;
+            }
+
+            case 7:
+            {
+                cout << "Value you want the predecessor of:\n";
+                cin >> x;
+                Node* w = srch(AVL, x);
+                Node* r = pred(AVL, w);
+                if(r == w)
+                    cout << "The node has no predecessor.\n";
+                else
+                    cout << r->val << '\n';
+                break;
+            }
+
+            case 8:
+            {
+                cout << "Value you want to delete:\n";
+                cin >> x;
+                break;
+            }
+            
+            case 9:
                 return 0;
+                break;
+
+            default:
+                cout << "Wrong index!\n";
                 break;
         }
     }
