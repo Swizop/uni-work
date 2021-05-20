@@ -29,9 +29,14 @@ Node* RLrotation(Node* t)
     z = y->l;
 
     x->r = z->l;
+    x->h = max(height(x->r), height(x->l)) + 1;
+
     y->l = z->r;
+    y->h = max(height(y->r), height(y->l)) + 1;
+
     z->l = x;
     z->r = y;
+    z->h = max(height(z->r), height(z->l)) + 1;
     return z;
 }
 
@@ -42,10 +47,45 @@ Node* RRrotation(Node* t)
     y = x->r;
 
     x->r = y->l;
+    x->h = max(height(x->r), height(x->l)) + 1;
+
     y->l = x;
+    y->h = max(height(y->l), height(y->r)) + 1;
     return y;
 }
 
+Node* LRrotation(Node* t)
+{
+    Node *x, *y, *z;            //rotation is always done on 3 nodes
+    x = t;
+    y = x->l;
+    z = y->r;
+
+    x->l = z->r;
+    x->h = max(height(x->r), height(x->l)) + 1;
+
+    y->r = z->l;
+    y->h = max(height(y->r), height(y->l)) + 1;
+
+    z->r = x;
+    z->l = y;
+    z->h = max(height(z->r), height(z->l)) + 1;
+    return z;
+}
+
+Node* LLrotation(Node* t)
+{
+    Node *x, *y;
+    x = t;
+    y = x->l;
+
+    x->l = y->r;
+    x->h = max(height(x->r), height(x->l)) + 1;
+
+    y->r = x;
+    y->h = max(height(y->l), height(y->r)) + 1;
+    return y;
+}
 
 Node* insert(Node* curr, int x)
 {
@@ -62,13 +102,13 @@ Node* insert(Node* curr, int x)
         if(x > curr->val)
         {
             curr->r = insert(curr->r, x);
-            curr->h = max(curr->h, curr->r->h + 1);
+            curr->h = max(height(curr->l), height(curr->r)) + 1;
         }
         else
             if(x < curr->val)
             {
                 curr->l = insert(curr->l, x);
-                curr->h = max(curr->h, curr->l->h + 1);
+                curr->h = max(height(curr->l), height(curr->r)) + 1;
             }
             else
                 return curr;            //avl should only have distinct elements
@@ -81,6 +121,13 @@ Node* insert(Node* curr, int x)
                 curr = RLrotation(curr);
             else
                 curr = RRrotation(curr);
+        }
+        if(index > 1)
+        {
+            if(x < curr->l->val)
+                curr = LLrotation(curr);
+            else
+                curr = LRrotation(curr);
         }
 
         return curr;
@@ -103,9 +150,9 @@ void inord(Node* curr)
 {
     if(curr != NULL)
     {
-        preord(curr->l);
+        inord(curr->l);
         cout << curr->val << " ";
-        preord(curr->r);
+        inord(curr->r);
     }
 }
 
