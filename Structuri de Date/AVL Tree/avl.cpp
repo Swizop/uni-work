@@ -217,6 +217,60 @@ Node* pred(Node* root, Node* t)
     return res;
 }
 
+
+Node* del(Node* curr, int x)
+{
+    if(curr->l == NULL && curr->r == NULL)
+    {
+        delete curr;
+        return NULL;
+    }
+
+    if(curr->val < x)
+    {
+        curr->r = del(curr->r, x);
+        // return curr;
+    }
+    else
+        if(curr->val > x)
+        {
+            curr->l = del(curr->l, x);
+            // return curr;
+        }
+        else
+        {
+            if(curr->l != NULL)
+            {
+                Node* p = pred(AVL, curr);
+                curr->val = p->val;
+                curr->l = del(curr->l, p->val);
+            }
+            else
+            {
+                Node* s = succ(AVL, curr);
+                curr->val = s->val;
+                curr->r = del(curr->r, s->val);
+            }
+        }
+
+    
+    curr->h = max(height(curr->r), height(curr->l)) + 1;
+
+    int index = height(curr->l) - height(curr->r);
+    if(index > 1 && height(curr->l->l) - height(curr->l->r) >= 0)
+        curr = LLrotation(curr);
+    else
+        if(index > 1 && height(curr->l->l) - height(curr->l->r) < 0)
+            curr = LRrotation(curr);
+        else
+            if(index < -1 && height(curr->r->l) - height(curr->r->r) <= 0)
+                curr = RRrotation(curr);
+            else
+                if(index < -1 && height(curr->r->l) - height(curr->r->r) > 0)
+                    curr = RLrotation(curr);
+                        
+    return curr;
+}
 void showOpt()
 {
     cout << "1. Create an entirely new AVL\n";
@@ -315,6 +369,13 @@ int main()
             {
                 cout << "Value you want to delete:\n";
                 cin >> x;
+                if(srch(AVL, x) == NULL)
+                {
+                    cout << x << " is not in the AVL.\n";
+                    break;
+                }
+
+                AVL = del(AVL, x);
                 break;
             }
             
