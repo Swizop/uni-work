@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-05-22T13:06:52.531Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66" etag="6eIx2a8e7oHjUBOhT-H9" version="14.6.5" type="github" pages="2">
+<mxfile host="app.diagrams.net" modified="2021-05-22T13:16:04.024Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66" etag="_WFaYzT_NH5MfBBXH2xu" version="14.6.5" type="github" pages="2">
   <diagram id="R2lEEEUBdFMjLlhIrx00" name="Page-1">
     <mxGraphModel dx="1831" dy="526" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0" extFonts="Permanent Marker^https://fonts.googleapis.com/css?family=Permanent+Marker">
       <root>
@@ -991,7 +991,7 @@
           <mxGeometry x="30" width="200" height="30" as="geometry" />
         </mxCell>
         <mxCell id="B2W8qHum1kX4ipTGixze-144" value="nume&lt;br style=&quot;font-size: 11px;&quot;&gt;durata&lt;br style=&quot;font-size: 11px;&quot;&gt;an&lt;br style=&quot;font-size: 11px;&quot;&gt;rating_IMDB&lt;br style=&quot;font-size: 11px;&quot;&gt;categorie" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;fontSize=11;" vertex="1" parent="B2W8qHum1kX4ipTGixze-1">
-          <mxGeometry x="-490" y="280" width="190" height="70" as="geometry" />
+          <mxGeometry x="-480" y="280" width="190" height="70" as="geometry" />
         </mxCell>
         <mxCell id="B2W8qHum1kX4ipTGixze-148" value="FK2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="B2W8qHum1kX4ipTGixze-1">
           <mxGeometry x="240" y="860" width="30" height="20" as="geometry" />
