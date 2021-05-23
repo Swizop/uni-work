@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2021-05-22T21:52:43.036Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66" etag="tTeid4YhOZjp6RPzlKYZ" version="14.7.0" type="github" pages="3">
+<mxfile host="app.diagrams.net" modified="2021-05-23T00:14:14.029Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/90.0.4430.212 Safari/537.36 Edg/90.0.818.66" etag="jVPKimSf9yZRP3YQEVn1" version="14.7.0" type="github" pages="3">
   <diagram id="lR5cAztrvBnTiU2KboaY" name="Page-2">
     <mxGraphModel dx="2272" dy="794" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -346,7 +346,7 @@
         <mxCell id="B2W8qHum1kX4ipTGixze-128" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" parent="B2W8qHum1kX4ipTGixze-126" vertex="1">
           <mxGeometry x="30" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="B2W8qHum1kX4ipTGixze-129" value="&amp;nbsp; nr_sala&lt;br&gt;&amp;nbsp; capacitate&lt;br&gt;&amp;nbsp; tip_sala" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="B2W8qHum1kX4ipTGixze-1" vertex="1">
+        <mxCell id="B2W8qHum1kX4ipTGixze-129" value="capacitate&lt;br&gt;tip_sala" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="B2W8qHum1kX4ipTGixze-1" vertex="1">
           <mxGeometry x="-500" y="675" width="180" height="55" as="geometry" />
         </mxCell>
         <mxCell id="B2W8qHum1kX4ipTGixze-130" value="" style="endArrow=none;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=0.873;exitY=-0.013;exitDx=0;exitDy=0;exitPerimeter=0;" parent="B2W8qHum1kX4ipTGixze-1" source="B2W8qHum1kX4ipTGixze-119" target="B2W8qHum1kX4ipTGixze-22" edge="1">
@@ -927,7 +927,7 @@
         <mxCell id="X4amiBPUwNz70qXDFohY-48" value="" style="shape=partialRectangle;overflow=hidden;connectable=0;fillColor=none;top=0;left=0;bottom=0;right=0;align=left;spacingLeft=6;" parent="X4amiBPUwNz70qXDFohY-46" vertex="1">
           <mxGeometry x="30" width="180" height="30" as="geometry" />
         </mxCell>
-        <mxCell id="X4amiBPUwNz70qXDFohY-49" value="&amp;nbsp; nr_sala&lt;br&gt;&amp;nbsp; capacitate&lt;br&gt;&amp;nbsp; tip_sala" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
+        <mxCell id="X4amiBPUwNz70qXDFohY-49" value="capacitate&lt;br&gt;tip_sala" style="text;html=1;strokeColor=none;fillColor=none;align=left;verticalAlign=top;whiteSpace=wrap;rounded=0;" parent="1" vertex="1">
           <mxGeometry x="-500" y="675" width="180" height="55" as="geometry" />
         </mxCell>
         <mxCell id="X4amiBPUwNz70qXDFohY-50" value="" style="endArrow=none;html=1;entryX=0;entryY=0.75;entryDx=0;entryDy=0;exitX=0.873;exitY=-0.013;exitDx=0;exitDy=0;exitPerimeter=0;" parent="1" source="X4amiBPUwNz70qXDFohY-39" target="C-vyLk0tnHw3VtMMgP7b-23" edge="1">
