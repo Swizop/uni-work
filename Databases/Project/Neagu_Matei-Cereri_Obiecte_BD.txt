@@ -1,0 +1,140 @@
+-- Sa se afiseze numele filmului, durata, anul lansarii, data difuzarii, cate luni au trecut de la difuzare, 
+--capacitatea salii, numarul de telefon al cinematografului si strada pe care se gaseste pentru fiecare difuzare de film din Bucuresti.
+--Vor fi afisate doar rezultatele pentru care capacitatea salii depaseste 70, in ordinea descrescatoare a anilor lansarii filmelor.
+
+
+SELECT f.nume, f.durata, f.an, 
+TO_CHAR(d.data_difuzare, 'DD-MM-YYYY') as "data difuzarii", TO_CHAR(MONTHS_BETWEEN(SYSDATE, d.data_difuzare), '9999.99') as
+"nr luni trecute de la difuzare",
+s.capacitate as "capacitate sala", c.nr_telefon as "telefon cinema", l.strada
+FROM FILM f, DIFUZARE d, SALA s, CINEMATOGRAF c, LOCATIE l
+WHERE d.film_id = f.film_id AND d.sala_id = s.sala_id AND s.cinematograf_id = c.cinematograf_id AND c.locatie_id = l.locatie_id
+AND s.capacitate > 70
+ORDER BY f.an desc;
+
+
+
+
+
+
+--Sa se afiseze numele si codul clientilor care au lasat un rating egal cu cel mai mic rating pentru cinematograful respectiv
+--lasat de o persoana care a rezervat mai putin de 4 locuri la o difuzare de film. Se va afisa si numarul de stele corespunzator.
+SELECT c.client_id as "cod client", CONCAT(c.nume, CONCAT(' ', c.prenume)) as "nume client", r.nr_stele as "stele",
+r.cinematograf_id as "cod cinema"
+FROM CLIENT c, RECENZIE r
+WHERE c.client_id = r.client_id AND
+r.nr_stele = (SELECT MIN(x.nr_stele) FROM RECENZIE x, CLIENT y, CUMPARA_BILET_PENTRU z
+WHERE x.client_id = y.client_id AND
+x.cinematograf_id = r.cinematograf_id AND
+y.client_id = z.client_id AND
+z.nr_locuri < 4);
+
+
+
+
+--Sa se afiseze numele si codul clientilor care au lasat un rating mai mare decat media reala a ratingurilor 
+--pentru cinematografele aflate pe Bulevardul Iuliu Maniu.
+
+SELECT c.client_id as "cod client", CONCAT(c.nume, CONCAT(' ', c.prenume)) as "nume client", r.nr_stele as "stele",
+r.cinematograf_id as "cod cinema"
+FROM CLIENT c, RECENZIE r
+WHERE c.client_id = r.client_id AND
+r.nr_stele > (SELECT AVG(x.nr_stele) FROM RECENZIE x, CINEMATOGRAF y, LOCATIE z
+WHERE x.cinematograf_id = y.cinematograf_id AND
+y.locatie_id = z.locatie_id AND
+UPPER(z.strada) LIKE '%IULIU MANIU%');
+
+
+--Sa se afiseze numarul de recenzii primite de fiecare cinema, fiind incluse doar cinematografele cu peste 2 recenzii primite
+
+SELECT COUNT(r.recenzie_id) as "numar de recenzii", c.nume as "nume cinematograf" 
+FROM CINEMATOGRAF c, RECENZIE r
+WHERE c.cinematograf_id = r.cinematograf_id
+GROUP BY c.nume
+HAVING COUNT(r.recenzie_id) > 1;
+
+
+
+--Sa se afiseze, pentru fiecare recenzie, printr-un text corespunzator,
+--daca numarul de stele este mai mare decat media reala a stelelor acordate in toate recenziile
+
+
+
+WITH temp AS ( SELECT AVG(nr_stele) AS medie FROM RECENZIE )
+SELECT r.recenzie_id AS "cod recenzie",
+CASE
+    WHEN r.nr_stele > t.medie THEN 'Mai mare decat media'
+    WHEN r.nr_stele = t.medie THEN 'Egal cu media'
+    ELSE 'Sub medie'
+END AS "clasificare recenzie"
+FROM RECENZIE r, temp t;
+
+
+--Sa se afiseze cantitatea totala de energie consumata de aparatele gasite in barurile din cinematografele
+--din Bucuresti.
+
+SELECT SUM(NVL(consumatie_energie, 0))
+FROM APARAT;
+
+
+
+--Sa se afiseze un mesaj corespunzator in functie de numarul de stele din fiecare recenzie
+
+SELECT r.recenzie_id as "cod recenzie", DECODE(r.nr_stele, 1, 'foarte slab', 2, 'slab', 3, 'ok', 4, 'bine', 'foarte bine') as "mesaj"
+FROM RECENZIE r;
+
+
+commit;
+
+--ex 12
+
+UPDATE REGIZOR
+SET nr_premii_oscar = nr_premii_oscar + 1
+WHERE regizor_id IN (SELECT regizor_id FROM FILM WHERE nume = 'Game of Phones');
+
+
+UPDATE APARAT
+SET tip_produs_generat = 'POPCORN'
+WHERE aparat_id IN (SELECT aparat_id FROM APARAT a, BAR b, CINEMATOGRAF c
+WHERE a.bar_id = b.bar_id AND b.cinematograf_id = c.cinematograf_id AND 
+LOWER(c.nume) LIKE '%afi');
+
+
+DELETE FROM ANGAJAT WHERE 
+lower(email) LIKE '%outlook%' AND cinematograf_id IN (SELECT
+cinematograf_id FROM CINEMATOGRAF WHERE LOWER(nume) LIKE '%polka%'); 
+
+
+rollback;
+
+
+
+
+
+--SECVENTA
+
+
+CREATE SEQUENCE sec_nmt
+start with 200
+increment by 1;
+
+
+INSERT INTO LOCATIE VALUES(sec_nmt.NEXTVAL, 'Strada Sforii', 4, 992344);
+INSERT INTO LOCATIE VALUES(sec_nmt.NEXTVAL, 'Bd. Nerva Traian', 10, 882344);
+
+
+SELECT * FROM LOCATIE;
+
+
+rollback;
+
+--16. 
+
+--Afisati numele tuturor regizorilor care au produs filme care se difuzeaza in cinematografele care contin litera 'f' in nume
+
+SELECT DISTINCT r.nume as "nume regizor", c.nume as "nume cinema"
+FROM CINEMATOGRAF c FULL OUTER JOIN SALA s ON s.cinematograf_id = c.cinematograf_id
+FULL OUTER JOIN DIFUZARE d ON d.sala_id = s.sala_id 
+FULL OUTER JOIN FILM f ON f.film_id = d.film_id
+FULL OUTER JOIN REGIZOR r ON f.regizor_id = r.regizor_id
+WHERE LOWER(c.nume) LIKE '%f%';
