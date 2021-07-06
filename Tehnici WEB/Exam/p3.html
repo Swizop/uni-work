@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" id="cifre">
+</body>
+</html>
+
+
+<style>
+    html, body {
+        height: 100%;
+        width: 100%;
+    }
+</style>
+
+<script>
+    but = document.getElementById("cifre");
+
+    if(localStorage.getItem("ap") !== null)
+        but.value = localStorage.getItem("ap");
+    
+    localStorage.setItem("ap", "0");
+
+    document.addEventListener("keydown",  c => {
+    if(c.keyCode >= 48 && c.keyCode <= 57)  {
+        but.value += (c.keyCode - 48).toString();
+        
+        localStorage.ap = parseInt(localStorage.ap) + 1;
+    }
+
+    else if(c.keyCode >= 68 && c.keyCode <= 90)
+    {
+        setInterval(function() {ultima()}, 3000);   
+    }
+
+});
+function ultima()
+        {
+            document.getElementById("cifre").style.backgroundColor = "red";
+            but.value = but.value.slice(1, );
+        }
+</script>

@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    
+
+</body>
+</html>
+
+<style>
+    html, body {
+        width: 100%;
+        height: 100%;
+    }
+</style>
+<script>
+    body = document.getElementsByTagName("body")[0];
+    nrButtons = 0;
+    body.setAttribute("onclick", "f1();");
+
+    function f1()
+    {
+        nrButtons = Math.floor(Math.random() * 10) + 1;
+        for(i = 1; i <= nrButtons; i++)
+        {
+            b = document.createElement("button");
+            if(i % 2 == 0)
+                b.style.backgroundColor = "red";
+            else
+                b.style.backgroundColor = "blue";
+
+            b.setAttribute("class", "buton");
+            body.appendChild(b);
+        }
+        f2();
+    }
+    function f2() {
+        arr = document.getElementsByClassName("buton"); 
+            body.removeAttribute("onclick");
+       for(var j = 0; j < arr.length; j++)
+        {
+            arr[j].style.borderWidth = "1px";
+            arr[j].style.borderColor = "green";
+            arr[j].style.position = "relative";
+            arr[j].style.top = (j * 10).toString() + "px";
+
+            // if((j + 1) % 2 == 0)
+            //     arr[j].setAttribute("onclick", "f3(red);");
+            // else
+            //     arr[j].setAttribute("onclick", "f3(blue);");
+            // arr[j].onclick = function () {body.style.backgroundColor = arr[j].style.backgroundColor; };
+            // arr[j].addEventListener("click", function() {
+            //     body.style.backgroundColor = arr[j].style.backgroundColor;
+            // });
+
+            if((j + 1) % 2 == 0)
+                arr[j].addEventListener("click", f3);
+            else
+                arr[j].addEventListener("click", f4);
+            
+        }
+        body.addEventListener("click", f5);
+    }
+
+    function f3(c) {
+        document.getElementsByTagName("body")[0].style.backgroundColor = "red";
+    }
+
+    function f4(c) {
+        document.getElementsByTagName("body")[0].style.backgroundColor = "blue";
+    }
+    
+    function f5(event) {
+        if(event.target != event.currentTarget)
+            return;
+            
+        alert("Apasati butoanele!");
+    }
+</script>
