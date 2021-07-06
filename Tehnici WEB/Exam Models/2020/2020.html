@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src = "aa.js" defer></script>
+</head>
+<body class ="body">
+    <div id="parinte"><div id="copil"> 
+        <span class="celula">a</span>
+        <div class="celula">BBBBBB</div>
+        <div class="celula">ccccc</div>
+        <div class="celula">DDDD</div>
+        <div>eeeeeeee</div>
+    </div></div>
+</body>
+
+
+
+<style>
+    div#parinte {
+            height: 800px;
+            width: 800px;
+            border-style: solid;
+            border-color: black;
+            border-width: 1px;
+        }
+
+        .celula {
+            background-color: pink;
+        }
+
+        div.celula {
+            border-style: solid;
+            border-width: 1px;
+
+        }
+        div.celula:nth-child(even) {
+            border-color: red;
+        }
+        div.celula:nth-child(odd) {
+            border-color: purple;
+        }
+
+        div.celula:hover {
+            animation: schimb 1s;
+        }
+
+        @keyframes schimb {
+            /*from {background-color: blue;}*/
+            to {background-color: blue;}
+        }
+    @media (max-width: 900px)
+    {
+        .celula {display: none;}
+        div#parinte {
+            width: 100%;
+            border-style: none;
+            background-color: green;
+        }
+    }
+</style>
+</html>
