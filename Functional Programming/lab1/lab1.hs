@@ -62,9 +62,11 @@ b x = if(mod x 2 == 0) then "par" else "impar"
 
 c :: Integer -> Integer
 c x =
-     if(x == 1)
+     if(x == 0)
           then 1
-          else x * c (x - 1)
+          else if(x == 1)
+               then 1
+               else x * c (x - 1)
 
 
 -- d) functie care verifica daca primul parametru e mai mare decat dublul celui de al doilea param.
