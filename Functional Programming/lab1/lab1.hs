@@ -1,5 +1,3 @@
-
-
 import Data.List
 
 myInt = 5555555555555555555555555555555555555555555555555555555555555555555555555555555555555
@@ -43,3 +41,33 @@ testmaxim4 x y z t =
      let max = maxim4 x y z t
      in max >= x && max >= y && max >= z && max >= t
 
+
+
+
+-- TEMA
+
+-- a) functie cu 2 parametri care calculeaza suma patratelor celor doua numere
+
+a :: Integer -> Integer -> Integer
+a x y = x * x + y * y
+
+
+-- b) functie care returneaza daca e par sau impar
+
+b :: Integer -> [Char]
+b x = if(mod x 2 == 0) then "par" else "impar"
+
+
+-- c) functie care calc factorialul unui nr
+
+c :: Integer -> Integer
+c x =
+     if(x == 1)
+          then 1
+          else x * c (x - 1)
+
+
+-- d) functie care verifica daca primul parametru e mai mare decat dublul celui de al doilea param.
+
+d :: Integer -> Integer -> Bool
+d x y = if(x > y * 2) then True else False
