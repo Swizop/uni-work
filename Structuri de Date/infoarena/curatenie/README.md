@@ -1,7 +1,0 @@
-Vampirii din Twilight nu s-au mulţumit cu numărul imens de fani foarte înfocaţi. Asa ca au atacat membrii organizatori ai Balulului Bobocilor al Facultăţii de Matematică şi Informatică din Universitatea din Bucureşti. Transformarea a început cu un singur individ. Apoi acesta a transformat la rândul sau cel mult doi indivizi, deoarece fiecare vampir are doua transformări la dispoziţie, şi tot asa mai departe fiecare individ a transformat indivizi, pana când toţi membrii Asociaţiei Studenţilor la Matematica şi Informatica au devenit vampiri. Astfel, ii putem aşeza ca într-un arbore binar, unde rădăcina este primul individ transformat, fii unui nod sunt exact membrii pe care acesta ia transformat. Problema lor, a vampirilor, este ca au făcut mizerie prin aceste transformări. Şi trebuie sa facă curăţenie. Tot ce ştiu ei e ca au doua tipuri de-a face curăţenie, şi anume:
-
-1) dacă este rândul lui X sa facă curăţenie, acesta îl pune pe primul transformat sa facă curăţenie, dacă exista, apoi face el curat, iar apoi îl va pune pe cel de-al doilea, dacă exista.
-
-2) dacă este rândul lui X sa facă curăţenie, va face el curat, după care acesta îl pune pe primul transformat, dacă exista, sa facă curăţenie, iar apoi îl va pune pe cel de-al doilea, dacă exista.
-
-Date cele doua ordini de a face curăţenie, voi trebuie sa aflaţi cine pe cine a transformat.
