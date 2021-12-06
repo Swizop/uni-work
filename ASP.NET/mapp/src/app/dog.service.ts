@@ -1,31 +1,93 @@
 import { Injectable } from '@angular/core';
 
+export interface DogImage {
+  id: string;
+  width: number;
+  height: number
+  url: string;
+};
+
+export interface DogWithoutImage {
+  weight: {
+    imperial: string;
+    metric: string;
+  };
+  height: {
+    imperial: string;
+    metric: string;
+  };
+  id: number;
+  name: string;
+  bred_for: string;
+  breed_group: string;
+  life_span: string;
+  temperament: string;
+  origin: string;
+  reference_image_id: string;
+}
+
+export interface DogResponse extends DogWithoutImage {
+  image: DogImage;
+}
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class DogService {
+  private apiKey = 'f66e847d-80f5-4013-a50f-ce8cfc0e446f';
+  private apiUrl = 'https://api.thedogapi.com/v1';      //chiar daca url ul pe site e https://api.thedogapi.com/v1/breeds, noi il scriem fara breeds
+  private limit = 20;
 
   constructor() { }
 
-  getDogs() {
-    console.log('Hello, dog service');
+  getDogs(): Promise<DogResponse[]> {
+    return fetch(`${this.apiUrl}/breeds?limit=${this.limit}`, {
+      headers: {
+        'x-api-key': this.apiKey
+      }
+    }).then(response => response.json());
   }
 
-  //callback function - promise. metoda va intoarce un promise care se va rezolva intr-un string
-  workWithPromise(time: number): Promise<string> {            //time -> parametru de timp number. promise<string> tipul de returnare     
-    const p = new Promise<string>(      //functie anonima, trimisa ca parametru in constructor
-      (resolve, reject) => {          //resolve -> s a intors callbackul, reject -> eroare
-      setTimeout(() => {
-        console.log('finished waiting');
-        if(time % 2 === 0) {
-          resolve('numar par');
-        }
-        else {
-          reject('numar impar');
-        }
-      }, time);         //dupa timpul time, se executa functia anonima de mai sus 
-    });
+  async search(query: string): Promise<DogResponse[]> {
+    const result: DogWithoutImage[] = await fetch(`${this.apiUrl}/breeds/search?q=${query}`, {
+      headers: {
+        'x-api-key': this.apiKey
+      }
+    }).then(response => response.json());
 
-    return p;
+    const promises = result.map(
+      (breed: DogWithoutImage): Promise<DogResponse> => {
+        return (
+          this.loadImage(breed.reference_image_id)
+            .then((image) => ({
+              ...breed,
+              image
+            })).catch(() => ({
+              ...breed,
+              image: {
+                id: breed.reference_image_id,
+                height: 0,
+                width: 0,
+                url: ''
+              }
+            }))
+        )
+      });
+
+    return Promise.all(promises);
+  }
+
+  loadImage(imageId: string): Promise<DogImage> {
+    return fetch(`${this.apiUrl}/images/${imageId}`, {
+      headers: {
+        'x-api-key': this.apiKey
+      }
+    }).then(response => response.json()).then((data): DogImage => ({
+      height: data.height,
+      id: data.id,
+      url: data.url,
+      width: data.width,
+    }));
   }
 }
