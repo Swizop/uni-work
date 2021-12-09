@@ -9,8 +9,8 @@
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("maxflow.in");
-ofstream g("maxflow.out");
+ifstream f("darb.in");
+ofstream g("darb.out");
 
 
 class Graph
@@ -28,10 +28,19 @@ class Graph
     public:
         Graph() = default;
 
+        void set_unoriented_edge(int, int);
+        void set_oriented_edge(int, int);
+
+        void init_edges();
+
         void set_nodesInfo(int);
         void set_distances();
         void set_fathers(vector<int>&);
 
+        void read_N();
+        void read_M();
+
+        void read_edges();
         void read_weightedEdges();
         void read_weightedNeighbours();
         void read_edges_flow(vector<vector<int>>&);
@@ -39,15 +48,36 @@ class Graph
         void print_message(string);
         void print_solution(vector<int>, int);
 
-
+        void BFS(int);
         void bellman_ford();
         void edmonds_karp();
+        void graph_diameter();
 };
 
 
+void Graph :: init_edges() { edges = vector<vector<int>> (N + 1);}
 void Graph :: set_nodesInfo(int value) { nodesInfo = vector<int> (N + 1, value); }
 void Graph :: set_distances() { distances = vector<int> (N + 1, MAX); }
 void Graph :: set_fathers(vector<int>& fathers) { fathers = vector<int> (N + 1);}
+
+
+void Graph :: set_unoriented_edge(int x, int y) { edges[x].push_back(y); edges[y].push_back(x); }
+void Graph :: set_oriented_edge(int x, int y) { edges[x].push_back(y); }
+
+
+void Graph :: read_N() { f >> N; }
+void Graph :: read_M() { f >> M; }
+
+
+void Graph :: read_edges()
+{
+    int i, x, y;
+    for(i = 1; i <= M; i++)
+    {
+        f >> x >> y;
+        set_unoriented_edge(x, y);
+    }
+}
 
 
 void Graph :: read_weightedEdges()
@@ -107,6 +137,30 @@ void Graph :: print_solution(vector<int> solution, int start)
     for(int i = start; i < solution.size(); i ++)
     {
         g << solution[i] << ' ';
+    }
+}
+
+
+void Graph :: BFS(int start)
+{
+    nodesInfo[start] = 0;
+    Q.push(start);
+    int curr, i, following;
+    while(!Q.empty())
+    {
+        curr = Q.front();
+        Q.pop();
+        for(i = 0; i < edges[curr].size(); i++)
+        {
+            following = edges[curr][i];
+            if(nodesInfo[following] == MAX)
+            {
+                Q.push(following);
+                nodesInfo[following] = nodesInfo[curr] + 1;
+            }
+            else if(nodesInfo[curr] + 1 < nodesInfo[following])
+                nodesInfo[following] = nodesInfo[curr] + 1;
+        }
     }
 }
 
@@ -214,9 +268,41 @@ void Graph :: edmonds_karp()
 }
 
 
+void Graph :: graph_diameter()
+{
+    read_N();
+    M = N - 1;
+    init_edges();
+    read_edges();
+    set_nodesInfo(MAX);
+
+    BFS(1);
+    int maxi = 0, nod1 = 1;
+    for(int i = 1; i <= N; i++)
+        if(nodesInfo[i] > maxi)
+        {
+            maxi = nodesInfo[i];
+            nod1 = i;
+        }
+    
+    set_nodesInfo(MAX);
+    BFS(nod1);
+
+    maxi = 0;
+    for(int i = 1; i <= N; i++)
+        if(nodesInfo[i] > maxi)
+        {
+            maxi = nodesInfo[i];
+            nod1 = i;
+        }
+
+    g << maxi + 1;
+}
+
+
 int main()
 {
     Graph gr;
-    gr.edmonds_karp();
+    gr.graph_diameter();
     return 0;
 }
