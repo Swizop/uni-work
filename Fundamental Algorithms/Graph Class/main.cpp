@@ -11,8 +11,8 @@
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("file.in");
-ofstream g("file.out");
+ifstream f("disjoint.in");
+ofstream g("disjoint.out");
 
 
 void print_stack(stack<int>& nodes)
@@ -22,6 +22,47 @@ void print_stack(stack<int>& nodes)
         g << nodes.top() << ' ';
         nodes.pop();
     }
+}
+
+
+class Disjoint_Set_Forest{
+    int N;
+    vector<int> father;
+    vector<int> height;
+    public:
+
+        Disjoint_Set_Forest(int = 0);
+        int represents(int);
+        void unite(int, int);
+};
+
+
+Disjoint_Set_Forest :: Disjoint_Set_Forest(int x): N(x) {
+    father = vector<int> (N + 1);
+    height = vector<int> (N + 1);
+}
+
+
+int Disjoint_Set_Forest :: represents(int curr)
+{
+    if(father[curr] == 0)
+        return curr;
+    
+    int f = represents(father[curr]);
+    father[curr] = f;
+    return f;
+}
+
+
+void Disjoint_Set_Forest :: unite(int x, int y)
+{
+    if(height[x] < height[y])
+        father[x] = y;
+    else
+        father[y] = x;
+ 
+    if(height[x] == height[y])
+        height[x] ++;
 }
 
 
@@ -752,9 +793,31 @@ void DFS_infoarena(Graph gr)
 }
 
 
+void disjoint_infoarena()
+{
+    int N, M;
+    f >> N >> M;
+    Disjoint_Set_Forest d(N);
+
+    int i, op, x, y;
+    for(i = 1; i <= M; i++)
+    {
+        f >> op >> x >> y;
+        if(op == 1)
+        {
+            d.unite(d.represents(x), d.represents(y));
+        }
+        else
+            if(d.represents(x) == d.represents(y))
+                g << "DA\n";
+            else
+                g << "NU\n";
+    }
+}
+
+
 int main()
 {
-    Graph gr;
-    gr.bridges();
+    disjoint_infoarena();
     return 0;
 }
