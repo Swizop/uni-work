@@ -11,8 +11,18 @@
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("biconex.in");
-ofstream g("biconex.out");
+ifstream f("ctc.in");
+ofstream g("ctc.out");
+
+
+void print_stack(stack<int>& nodes)
+{
+    while(!nodes.empty())
+    {
+        g << nodes.top() << ' ';
+        nodes.pop();
+    }
+}
 
 
 class Graph
@@ -48,6 +58,8 @@ class Graph
 
         void read_edges();      // use when edges are given in the form of adjacency list
         void read_edges_oriented();
+        void read_edges_oriented_with_reversed(vector<vector<int>>&);
+        
         void read_edges_matrix();       // edges are given in the form of adjacency matrix
         void read_weightedEdges();
         void read_weightedNeighbours();
@@ -59,9 +71,13 @@ class Graph
 
         void BFS(int);
         void DFS(int);
+        void DFS_kosaraju(int, vector<vector<int>>&, vector<int>&);
         
         void biconnected_utility(int, stack<int>&, vector<int>&, vector<vector<int>>&, int&);
         void biconnected();
+        void strongly_connected();
+        void top_sort_utility(int, stack<int>&);
+        void topological_sort();
         void bellman_ford();
         void edmonds_karp();
         void graph_diameter();
@@ -123,6 +139,18 @@ void Graph :: read_edges_oriented()
     {
         f >> x >> y;
         set_oriented_edge(x, y);
+    }
+}
+
+
+void Graph :: read_edges_oriented_with_reversed(vector<vector<int>>& reversed)
+{
+    int i, x, y;
+    for(i = 1; i <= M; i++)
+    {
+        f >> x >> y;
+        set_oriented_edge(x, y);
+        reversed[y].push_back(x);
     }
 }
 
@@ -336,6 +364,103 @@ void Graph :: biconnected()
 }
 
 
+void Graph :: DFS_kosaraju(int curr, vector<vector<int>>& reversed, vector<int>& aux)
+{
+    nodesInfo[curr] = 2;
+    int x;
+    for(int j = 0; j < reversed[curr].size(); j++)
+    {
+        x = reversed[curr][j];
+        if(nodesInfo[x] == 1)
+        {
+            DFS_kosaraju(x, reversed, aux);
+        }
+    }
+    aux.push_back(curr);
+}
+
+
+void Graph :: strongly_connected()
+{
+    read_N();
+    read_M();
+
+    init_edges();
+    vector<vector<int>> reversed = vector<vector<int>>(N + 1);
+    read_edges_oriented_with_reversed(reversed);
+
+    int i;
+    set_nodesInfo(0);      //nodesInfo is used as the vector for "visited"
+
+    // kosaraju
+
+    stack<int> nodes;
+    for(i = 1 ; i <= N; i++)
+    {
+        if(nodesInfo[i] == 0)
+            top_sort_utility(i, nodes);
+    }
+ 
+    int scc = 0;
+    vector<int> aux;
+    vector<vector<int>> solution;
+
+    while(!nodes.empty())
+    {
+        if(nodesInfo[nodes.top()] == 1)
+        {
+            aux = vector<int>();
+            DFS_kosaraju(nodes.top(), reversed, aux);
+            solution.push_back(aux);
+            scc ++;
+        }
+        nodes.pop();
+    }
+    g << scc << '\n';
+ 
+    for(i = 0; i < solution.size(); i++)
+    {
+        for(int j = 0; j < solution[i].size(); j++)
+            g << solution[i][j] << ' ';
+        g << '\n';
+    }
+}
+
+
+void Graph :: top_sort_utility(int curr, stack<int>& nodes)
+{
+    nodesInfo[curr] = 1;
+    int x;
+    for(int i = 0; i < edges[curr].size(); i++)
+    {
+        x = edges[curr][i];
+        if(nodesInfo[x] == 0)
+            top_sort_utility(x, nodes);
+    }
+
+    nodes.push(curr);
+}
+
+void Graph :: topological_sort()
+{
+    read_N();
+    read_M();
+    init_edges();
+    read_edges_oriented();
+    set_nodesInfo(0);           // nodesInfo is used as "visited"
+
+    stack<int> nodes;
+
+    for(int i = 1; i <= N; i++)
+    {
+        if(nodesInfo[i] == 0)
+            top_sort_utility(i, nodes);
+    }
+
+    print_stack(nodes);
+}
+
+
 void Graph :: bellman_ford()
 {
     read_weightedNeighbours();
@@ -540,9 +665,10 @@ void DFS_infoarena(Graph gr)
     g << conexElements;
 }
 
+
 int main()
 {
     Graph gr;
-    gr.biconnected();
+    gr.strongly_connected();
     return 0;
 }
