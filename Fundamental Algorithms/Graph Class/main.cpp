@@ -4,13 +4,14 @@
 #include <utility>
 #include <string>
 #include <queue>
+#include <stack>
 
 #define MAX 1000000000
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("darb.in");
-ofstream g("darb.out");
+ifstream f("file.in");
+ofstream g("file.out");
 
 
 class Graph
@@ -40,7 +41,8 @@ class Graph
         void read_N();
         void read_M();
 
-        void read_edges();
+        void read_edges();      // use when edges are given in the form of adjacency list
+        void read_edges_matrix();       // edges are given in the form of adjacency matrix
         void read_weightedEdges();
         void read_weightedNeighbours();
         void read_edges_flow(vector<vector<int>>&);
@@ -52,6 +54,8 @@ class Graph
         void bellman_ford();
         void edmonds_karp();
         void graph_diameter();
+        void roy_floyd();
+        void euler_cycle();
 };
 
 
@@ -67,6 +71,22 @@ void Graph :: set_oriented_edge(int x, int y) { edges[x].push_back(y); }
 
 void Graph :: read_N() { f >> N; }
 void Graph :: read_M() { f >> M; }
+
+
+void Graph :: read_edges_matrix()
+{
+    int i, j;
+    for(i = 1; i <= N; i++)
+        edges[i] = vector<int> (N + 1);
+    
+    for(i = 1; i <= N; i++)
+        for(j = 1; j <= N; j++)
+        {
+            f >> edges[i][j];
+            if(edges[i][j] == 0 && i != j)
+                edges[i][j] = MAX;
+        }
+}
 
 
 void Graph :: read_edges()
@@ -300,9 +320,117 @@ void Graph :: graph_diameter()
 }
 
 
+void Graph :: roy_floyd()
+{
+    read_N();
+    init_edges();
+    read_edges_matrix();
+
+    int i, j, k;
+    for(k = 1; k <= N; k++)
+        for(i = 1; i <= N; i++)
+        {
+            if(i == k) continue;
+            for(j = 1; j <= N; j++)
+                edges[i][j] = min(edges[i][j], edges[i][k] + edges[k][j]);
+        }
+
+    for(i = 1; i <= N; i++)
+    {
+        for(j = 1; j <= N; j++)
+            if(edges[i][j] == MAX)
+                g << "0 ";
+            else
+                g << edges[i][j] << ' ';
+        g << '\n';
+    }
+}
+
+
+void Graph :: euler_cycle()
+{
+    read_N();
+    read_M();
+
+    init_edges();
+
+    int i, x, y, curr;
+    vector<pair<int, int>> multigraphEdges = vector<pair<int, int>> (M + 1);
+    vector<int> isEdgeVisited = vector<int> (M + 1);
+
+    set_nodesInfo(0);           //nodesInfo will store the degree of each node
+
+    for(i = 1; i <= M; i++)
+    {
+        f >> x >> y;
+        multigraphEdges[i] = make_pair(x, y);
+        set_oriented_edge(x, i);
+        set_oriented_edge(y, i);
+
+        nodesInfo[x]++;
+        nodesInfo[y]++;
+    }
+
+    for(i = 1; i <= N; i++)
+        if(nodesInfo[i] % 2 != 0)
+        {
+            g << -1;
+            return;
+        }
+    
+    int e, start = 1;                  //nodes can have degree 0 in an eulerian graph, we don't want to start from one
+    while(nodesInfo[start] == 0)
+        start++;
+    
+    stack<int> dfsStack, solution;
+    dfsStack.push(start);
+
+    while(!dfsStack.empty())
+    {
+        curr = dfsStack.top();
+        // if(nodesInfo[curr] == 0)
+        // {
+            solution.push(curr);
+            dfsStack.pop();
+            nodesInfo[curr] = 0;
+        // }
+        // else
+        // {
+            for(i = 0; i < edges[curr].size(); i++)
+            {
+                e = edges[curr][i];
+                if(isEdgeVisited[e] == 0)
+                {
+                    isEdgeVisited[e] = 1;
+                    // nodesInfo[multigraphEdges[e].first]--;
+                    // nodesInfo[multigraphEdges[e].second]--;
+                    if(multigraphEdges[e].first != curr)
+                        dfsStack.push(multigraphEdges[e].first);
+                    else
+                        dfsStack.push(multigraphEdges[e].second);
+                }
+            }
+        //}
+    }
+
+    for(i = 1; i <= N; i++)
+        if(nodesInfo[i] > 0)
+        {
+            g << -1;
+            return;
+        }
+
+    while(!solution.empty())
+    {
+        g << solution.top() << ' ';
+        solution.pop();
+    }
+}
+
+
 int main()
 {
     Graph gr;
-    gr.graph_diameter();
+    gr.euler_cycle();
     return 0;
 }
