@@ -5,13 +5,14 @@
 #include <string>
 #include <queue>
 #include <stack>
+#include <algorithm>
 
 #define MAX 1000000000
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("file.in");
-ofstream g("file.out");
+ifstream f("biconex.in");
+ofstream g("biconex.out");
 
 
 class Graph
@@ -41,7 +42,12 @@ class Graph
         void read_N();
         void read_M();
 
+        int get_N();
+        int get_node_info(int);
+        void set_node_info(int, int);
+
         void read_edges();      // use when edges are given in the form of adjacency list
+        void read_edges_oriented();
         void read_edges_matrix();       // edges are given in the form of adjacency matrix
         void read_weightedEdges();
         void read_weightedNeighbours();
@@ -49,8 +55,13 @@ class Graph
 
         void print_message(string);
         void print_solution(vector<int>, int);
+        void print_nodesInfo(int, int, int);
 
         void BFS(int);
+        void DFS(int);
+        
+        void biconnected_utility(int, stack<int>&, vector<int>&, vector<vector<int>>&, int&);
+        void biconnected();
         void bellman_ford();
         void edmonds_karp();
         void graph_diameter();
@@ -71,6 +82,11 @@ void Graph :: set_oriented_edge(int x, int y) { edges[x].push_back(y); }
 
 void Graph :: read_N() { f >> N; }
 void Graph :: read_M() { f >> M; }
+
+
+int Graph :: get_N() { return N; }
+int Graph :: get_node_info(int x) { return nodesInfo[x]; }
+void Graph :: set_node_info(int x, int val) { nodesInfo[x] = val; }
 
 
 void Graph :: read_edges_matrix()
@@ -96,6 +112,17 @@ void Graph :: read_edges()
     {
         f >> x >> y;
         set_unoriented_edge(x, y);
+    }
+}
+
+
+void Graph :: read_edges_oriented()
+{
+    int i, x, y;
+    for(i = 1; i <= M; i++)
+    {
+        f >> x >> y;
+        set_oriented_edge(x, y);
     }
 }
 
@@ -161,6 +188,16 @@ void Graph :: print_solution(vector<int> solution, int start)
 }
 
 
+void Graph :: print_nodesInfo(int start, int replaced, int replaceWith)
+{
+    for(int i = start; i <= N; i++)
+        if(nodesInfo[i] == replaced)
+            g << replaceWith << " ";
+        else
+            g << nodesInfo[i] << " ";
+}
+
+
 void Graph :: BFS(int start)
 {
     nodesInfo[start] = 0;
@@ -181,6 +218,120 @@ void Graph :: BFS(int start)
             else if(nodesInfo[curr] + 1 < nodesInfo[following])
                 nodesInfo[following] = nodesInfo[curr] + 1;
         }
+    }
+}
+
+
+void Graph :: DFS(int curr)
+{
+    for(int i = 0; i < edges[curr].size(); i++)
+        if(nodesInfo[edges[curr][i]] == 0)
+        {
+            nodesInfo[edges[curr][i]] = 1;
+            DFS(edges[curr][i]);
+        }
+}
+
+
+void Graph :: biconnected_utility(int curr, stack<int>& nodes, vector<int>& earliest, vector<vector<int>>& solution, int& K)
+{
+    int subComponents = 0, following;
+ 
+    for(int i = 0; i < edges[curr].size(); i++)
+    {
+        following = edges[curr][i];
+        if(nodesInfo[following] == 0)
+        {
+            subComponents += 1;
+ 
+            nodes.push(following);
+            nodesInfo[following] = nodesInfo[curr] + 1;
+            earliest[following] = nodesInfo[curr];
+ 
+            biconnected_utility(following, nodes, earliest, solution, K);
+ 
+            if(subComponents > 1 && nodesInfo[curr] == 1)       // the only link between {{v[curr][i] and the nodes that follow it}} and {{the nodes already visited}}
+                                    // is through curr => curr is a critical point => from v[curr][i] onwards we have a new biconnected component
+            {
+                solution.push_back(vector<int>());
+                while(!(nodes.top() == following))
+                {
+                    solution[K].push_back(nodes.top());
+                    nodes.pop();
+                }
+                solution[K].push_back(nodes.top());
+                nodes.pop();
+                solution[K].push_back(curr);        // curr (the top level node) was part of the biconnected component which was just visited in the recursion, but it will
+                                                // also be in the biconnected component with the nodes previous to that, so we keep curr in the stack, adding it sepparately
+                K++;
+            }
+ 
+            if(nodesInfo[curr] <= earliest[following] && nodesInfo[curr] > 1)
+            {
+                solution.push_back(vector<int>());
+                while(!(nodes.top() == following))
+                {
+                    solution[K].push_back(nodes.top());
+                    nodes.pop();
+                }
+                solution[K].push_back(nodes.top());
+                nodes.pop();
+                solution[K].push_back(curr);
+                K++;
+            }
+            else
+                earliest[curr] = min(earliest[following], earliest[curr]);
+            // if curr is the first node, the last biconnected component will remain in the stack bc the program won't go to line 30 again, and we'll empty it in main()
+        }
+        else
+        {
+            earliest[curr] = min(earliest[curr], nodesInfo[following]);
+        }
+    }
+}
+
+void Graph :: biconnected()
+{
+    read_N();
+    read_M();
+
+    init_edges();
+    read_edges();
+    set_nodesInfo(0);       // nodesInfo will represent the time when nodes were discovered
+
+    vector<int> earliest = vector<int> (N + 1);        // the earliest time of a node to which a node can go back to
+    stack<int> nodes;
+    vector<vector<int>> solution;
+    int i, K = 0;
+
+    for(i = 1; i <= N; i++)
+    {
+        if (nodesInfo[i] == 0)
+        {
+            nodesInfo[i] = earliest[i] = 1;
+            nodes.push(i);
+            biconnected_utility(i, nodes, earliest, solution, K);
+        }
+        if(!nodes.empty())
+        {
+            solution.push_back(vector<int>());
+            while(!nodes.empty())
+            {
+                solution[K].push_back(nodes.top());
+                nodes.pop();
+            }
+            K++;
+        }
+    }
+ 
+    g << K << '\n';
+    for(i = 0; i < K; i++)
+    {
+        for (int j = 0; j < solution[i].size(); j++)
+        {
+            g << solution[i][j] << ' ';
+        }
+        g << '\n';
     }
 }
 
@@ -347,90 +498,51 @@ void Graph :: roy_floyd()
 }
 
 
-void Graph :: euler_cycle()
+void BFS_infoarena(Graph gr)
 {
-    read_N();
-    read_M();
+    gr.read_N();
+    gr.read_M();
 
-    init_edges();
+    int start;
+    f >> start;
 
-    int i, x, y, curr;
-    vector<pair<int, int>> multigraphEdges = vector<pair<int, int>> (M + 1);
-    vector<int> isEdgeVisited = vector<int> (M + 1);
+    gr.set_nodesInfo(MAX);
+    gr.init_edges();
+    gr.read_edges_oriented();
 
-    set_nodesInfo(0);           //nodesInfo will store the degree of each node
 
-    for(i = 1; i <= M; i++)
-    {
-        f >> x >> y;
-        multigraphEdges[i] = make_pair(x, y);
-        set_oriented_edge(x, i);
-        set_oriented_edge(y, i);
-
-        nodesInfo[x]++;
-        nodesInfo[y]++;
-    }
-
-    for(i = 1; i <= N; i++)
-        if(nodesInfo[i] % 2 != 0)
-        {
-            g << -1;
-            return;
-        }
+    gr.BFS(start);
     
-    int e, start = 1;                  //nodes can have degree 0 in an eulerian graph, we don't want to start from one
-    while(nodesInfo[start] == 0)
-        start++;
-    
-    stack<int> dfsStack, solution;
-    dfsStack.push(start);
+    gr.print_nodesInfo(1, MAX, -1);
 
-    while(!dfsStack.empty())
-    {
-        curr = dfsStack.top();
-        // if(nodesInfo[curr] == 0)
-        // {
-            solution.push(curr);
-            dfsStack.pop();
-            nodesInfo[curr] = 0;
-        // }
-        // else
-        // {
-            for(i = 0; i < edges[curr].size(); i++)
-            {
-                e = edges[curr][i];
-                if(isEdgeVisited[e] == 0)
-                {
-                    isEdgeVisited[e] = 1;
-                    // nodesInfo[multigraphEdges[e].first]--;
-                    // nodesInfo[multigraphEdges[e].second]--;
-                    if(multigraphEdges[e].first != curr)
-                        dfsStack.push(multigraphEdges[e].first);
-                    else
-                        dfsStack.push(multigraphEdges[e].second);
-                }
-            }
-        //}
-    }
-
-    for(i = 1; i <= N; i++)
-        if(nodesInfo[i] > 0)
-        {
-            g << -1;
-            return;
-        }
-
-    while(!solution.empty())
-    {
-        g << solution.top() << ' ';
-        solution.pop();
-    }
 }
 
+
+void DFS_infoarena(Graph gr)
+{
+    gr.read_N();
+    gr.read_M();
+
+    gr.set_nodesInfo(0);
+    gr.init_edges();
+    gr.read_edges();
+
+    int conexElements = 0;
+    for(int i = 1; i <= gr.get_N(); i++)
+    {
+        if (gr.get_node_info(i) == 0)
+        {
+            gr.set_node_info(i, 1);
+            conexElements ++;
+            gr.DFS(i);
+        }
+    }
+    g << conexElements;
+}
 
 int main()
 {
     Graph gr;
-    gr.euler_cycle();
+    gr.biconnected();
     return 0;
 }
