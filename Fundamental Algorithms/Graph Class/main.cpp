@@ -11,8 +11,8 @@
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("ctc.in");
-ofstream g("ctc.out");
+ifstream f("file.in");
+ofstream g("file.out");
 
 
 void print_stack(stack<int>& nodes)
@@ -78,6 +78,9 @@ class Graph
         void strongly_connected();
         void top_sort_utility(int, stack<int>&);
         void topological_sort();
+        void havel_hakimi();
+        void critical(int, int, vector<vector<int>>&, vector<int>&);
+        void bridges();
         void bellman_ford();
         void edmonds_karp();
         void graph_diameter();
@@ -461,6 +464,89 @@ void Graph :: topological_sort()
 }
 
 
+void Graph :: havel_hakimi()
+{
+    read_N();
+    int i, x, j;
+    for(i = 1; i <= N; i++)
+    {
+        f >> x;
+        nodesInfo.push_back(x);
+    }
+
+    while(true)
+    {
+        sort(nodesInfo.begin(), nodesInfo.end());
+        i = nodesInfo.size() - 1;
+        if(nodesInfo[i] == 0)     // every node has degree 0 so the graph can be made
+        {
+            print_message("Yes.");
+            break;
+        }
+        j = i - 1;
+        while(j >= 0 && nodesInfo[i] > 0)
+        {
+            nodesInfo[j]--;
+            nodesInfo[i]--;
+            if(nodesInfo[j] < 0)
+            {
+                print_message("No!");
+                return;
+            }
+            j--;
+        }
+        if(j == -1 && nodesInfo[i] > 0)
+        {
+            print_message("No!");
+            break;
+        }
+        nodesInfo.pop_back();
+    }
+}
+
+
+void Graph :: critical(int curr, int father, vector<vector<int>>& sol, vector<int>& upwards)
+{
+    int i, x;
+    for(i = 0; i < edges[curr].size(); i++)
+    {
+        x = edges[curr][i];
+        if (nodesInfo[x] == 0)
+        {
+            nodesInfo[x] = upwards[x] = nodesInfo[curr] + 1;
+            critical(x, curr, sol, upwards);
+            if(upwards[curr] > upwards[x])
+                upwards[curr] = upwards[x];
+        }
+        else
+            if(x != father && father != -1)
+                if(upwards[curr] > nodesInfo[x])
+                    upwards[curr] = nodesInfo[x];
+    }
+    if(nodesInfo[curr] == upwards[curr] && father != -1)
+        sol.push_back(vector<int> {father, curr});
+            
+}
+
+
+void Graph :: bridges()
+{
+    read_N();
+    read_M();
+    init_edges();
+    read_edges();
+    set_nodesInfo(0);       // nodesInfo[x] -> the level of node x in DFS tree
+
+    vector<int> upwards = vector<int> (N);
+    vector<vector<int>> sol;
+    nodesInfo[0] = upwards[0] = 1;
+    critical(0, -1, sol, upwards);
+    
+    for(int i = 0; i < sol.size(); i++)
+        g << sol[i][0] << ' ' << sol[i][1] << '\n';
+}
+
+
 void Graph :: bellman_ford()
 {
     read_weightedNeighbours();
@@ -669,6 +755,6 @@ void DFS_infoarena(Graph gr)
 int main()
 {
     Graph gr;
-    gr.strongly_connected();
+    gr.bridges();
     return 0;
 }
