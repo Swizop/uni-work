@@ -18,6 +18,10 @@ export const routes: Routes = [
             {
                 path: 'details',
                 component: DetailsComponent
+            },
+            {
+                path: 'details/:idFromUrl',
+                component: DetailsComponent
             }
         ]
     }
