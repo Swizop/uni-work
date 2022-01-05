@@ -11,8 +11,8 @@
 #define MAXCAPACITY 200000
 using namespace std;
 
-ifstream f("disjoint.in");
-ofstream g("disjoint.out");
+ifstream f("dfs.in");
+ofstream g("dfs.out");
 
 
 void print_stack(stack<int>& nodes)
@@ -76,8 +76,6 @@ class Graph
     vector<vector<pair<int, int>>> weightedNeighbours;          // first -> edge weight ; second -> 2nd node in edge
     vector<vector<int>> edges;
 
-    vector<int> distances;
-
     public:
         Graph() = default;
 
@@ -87,7 +85,6 @@ class Graph
         void init_edges();
 
         void set_nodesInfo(int);
-        void set_distances();
         void set_fathers(vector<int>&);
 
         void read_N();
@@ -107,7 +104,7 @@ class Graph
         void read_edges_flow(vector<vector<int>>&);
 
         void print_message(string);
-        void print_solution(vector<int>, int);
+        void print_array(vector<int>, int);
         void print_nodesInfo(int, int, int);
 
         void BFS(int);
@@ -122,6 +119,8 @@ class Graph
         void havel_hakimi();
         void critical(int, int, vector<vector<int>>&, vector<int>&);
         void bridges();
+        void kruskal();
+        void dijkstra(int);
         void bellman_ford();
         void edmonds_karp();
         void graph_diameter();
@@ -132,7 +131,6 @@ class Graph
 
 void Graph :: init_edges() { edges = vector<vector<int>> (N + 1);}
 void Graph :: set_nodesInfo(int value) { nodesInfo = vector<int> (N + 1, value); }
-void Graph :: set_distances() { distances = vector<int> (N + 1, MAX); }
 void Graph :: set_fathers(vector<int>& fathers) { fathers = vector<int> (N + 1);}
 
 
@@ -201,7 +199,8 @@ void Graph :: read_edges_oriented_with_reversed(vector<vector<int>>& reversed)
 
 void Graph :: read_weightedEdges()
 {
-    f >> N >> M;
+    read_N();
+    read_M();
 
     int i, x, y, c;
     for(i = 1; i <= M; i++)
@@ -214,8 +213,10 @@ void Graph :: read_weightedEdges()
 
 void Graph :: read_weightedNeighbours()
 {
-    f >> N >> M;
-    weightedNeighbours = vector<vector<pair<int, int>>> (N + 1);
+    read_N();
+    read_M();
+
+    weightedNeighbours = vector<vector<pair<int, int>>> (N + 1);    // first -> edge weight ; second -> 2nd node in edge
 
     int i, x, y, c;
     for(i = 1; i <= M; i++)
@@ -251,7 +252,7 @@ void Graph :: read_edges_flow(vector<vector<int>>& flow)
 void Graph :: print_message(string m) { g << m; }
 
 
-void Graph :: print_solution(vector<int> solution, int start)
+void Graph :: print_array(vector<int> solution, int start)
 {
     for(int i = start; i < solution.size(); i ++)
     {
@@ -588,12 +589,81 @@ void Graph :: bridges()
 }
 
 
+void Graph :: kruskal()
+{
+    read_weightedEdges();
+    Disjoint_Set_Forest d(N);
+    vector<pair<int, int>> solution;
+
+    int totalCost = 0, j = 0;
+    sort(weightedEdges.begin(), weightedEdges.end());
+    int i;
+
+    for(i = 1; i <= N - 1; i++)
+    {
+        while(!(d.represents(weightedEdges[j].second.first) != d.represents(weightedEdges[j].second.second)))
+            j++;
+        totalCost += weightedEdges[j].first;
+        solution.push_back(weightedEdges[j].second);
+ 
+ 
+        d.unite(d.represents(weightedEdges[j].second.first), d.represents(weightedEdges[j].second.second));
+    }
+ 
+    g << totalCost << '\n' << N - 1 << '\n';
+    for(i = 0; i < solution.size(); i++)
+        g << solution[i].first << ' ' << solution[i].second << '\n';
+}
+
+
+void Graph :: dijkstra(int start)
+{
+    read_weightedNeighbours();
+    set_nodesInfo(MAX);       // nodesInfo[x] == distance to node x
+
+    vector<int> selected = vector<int>(N + 1);
+    pair<int, int> edg;
+    priority_queue<pair<int,int>> pq;
+
+    nodesInfo[start] = 0;
+    pq.push(make_pair(0, start));
+ 
+    int x, c, i;
+    while(!pq.empty())
+    {
+        x = pq.top().second;
+        c = -pq.top().first;
+        pq.pop();
+ 
+        if(selected[x] == 0)
+        {
+            selected[x] = 1;
+ 
+            for(i = 0; i < weightedNeighbours[x].size(); i++)
+            {
+                edg = weightedNeighbours[x][i];
+                if(selected[edg.second] == 0)
+                {
+                    if(c + edg.first < nodesInfo[edg.second])
+                    {
+                        nodesInfo[edg.second] = c + edg.first;
+                        pq.push(make_pair(-nodesInfo[edg.second], edg.second));
+                    }
+                }
+            }
+        }
+    }
+ 
+    print_nodesInfo(2, MAX, 0);
+}
+
+
 void Graph :: bellman_ford()
 {
     read_weightedNeighbours();
-    set_distances();
     set_nodesInfo(0);
 
+    vector<int> distances = vector<int> (N + 1, MAX);
     distances[1] = 0;
     nodesInfo[1] = 1;       // if nodesInfo[x] is > 0, then x is currently in the Q. otherwise, it's not
     Q.push(1);              //Q contains the nodes that were recently updated and whose neighbours need updates accordingly
@@ -627,7 +697,7 @@ void Graph :: bellman_ford()
         }
     }
 
-    print_solution(distances, 2);
+    print_array(distances, 2);
 }
 
 
@@ -818,6 +888,7 @@ void disjoint_infoarena()
 
 int main()
 {
-    disjoint_infoarena();
+    Graph gr;
+    DFS_infoarena(gr);
     return 0;
 }
