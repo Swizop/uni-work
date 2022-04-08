@@ -1,7 +1,8 @@
+# import numpy
 import random
 import copy
 
-from math import log2
+from math import factorial, log2
 
 popSize = int(input("population size="))
 lowerBound = float(input("interval: left endpoint="))
@@ -21,10 +22,33 @@ if mutationProbability < 0 or mutationProbability > 1:
 nrSteps = int(input("nr. of steps="))
 g = open("out.txt", 'w')
 
-def f(x):
-    global a, b, c
-    return a * x * x + b * x + c
+# def f(x):
+#     global a, b, c
+#     return a * x * x + b * x + c
+def sin_function(x):
 
+    # Doing this instead of math.abs
+    sym_fact = -1 if x < 0 else 1
+    y = -x if x < 0 else x
+
+    # convert input radians to [-PI, +PI]
+    PI = 3.141592653589793
+    pi_factor = int(y / PI)
+    adj = pi_factor if pi_factor%2 == 0 else pi_factor + 1
+    rad = y - PI*adj
+
+    # Taylor expand, increase num_terms for more precision
+    total = 0
+    num_terms = 7
+    f_sign = 1
+    for i in range(1,2*num_terms+1,2):
+        total += f_sign * pow(rad, i)/factorial(i)
+        f_sign *= -1
+
+    return total*sym_fact
+    
+def f(x):
+    return sin_function(x) + 5
 
 chromosomeLen = int(log2((upperBound - lowerBound) * (10 ** precision)))
 multiplyFactor = (upperBound - lowerBound) / (2 ** chromosomeLen - 1)
@@ -34,7 +58,9 @@ chromosomes = [None] * popSize
 g.write("Populatia initiala\n")
 for i in range(popSize):
     chromosomes[i] = [random.randint(0, 2 ** chromosomeLen - 1)]
-    x = multiplyFactor * chromosomes[i][0] + a
+    x = multiplyFactor * chromosomes[i][0] + lowerBound
+    # print(f"{chromosomes[i][0]} se transforma in {x} ; folosind mulFactor {multiplyFactor}")
+    # print(multiplyFactor * chromosomes[i][0], chromosomes[i][0] * 1.9073504518036383e-06)
     show = "{0:b}".format(chromosomes[i][0])
     chromosomes[i].append(f(x))
     g.write(f"{i + 1}: {show.zfill(chromosomeLen)} x= {x} f= {chromosomes[i][1]}\n")
@@ -85,7 +111,7 @@ for step in range(nrSteps):
         g.write('\nDupa selectie:\n')
         for i in range(len(newChromosomes)):
             show = "{0:b}".format(newChromosomes[i][0])
-            x = multiplyFactor * newChromosomes[i][0] + a
+            x = multiplyFactor * newChromosomes[i][0] + lowerBound
             g.write(f"{i + 1}: {show.zfill(chromosomeLen)} x= {x} f= {newChromosomes[i][1]}\n")
         g.write(f'\nProbabilitatea de incrucisare {combineProbability}\n')
 
@@ -114,8 +140,8 @@ for step in range(nrSteps):
         newChromosomes[participants[i]][0] = int(newX, base=2)
         newChromosomes[participants[i + 1]][0] = int(newY, base=2)
 
-        val1 = int(newX, base=2) * multiplyFactor + a
-        val2 = int(newY, base=2) * multiplyFactor + a
+        val1 = int(newX, base=2) * multiplyFactor + lowerBound
+        val2 = int(newY, base=2) * multiplyFactor + lowerBound
 
         newChromosomes[participants[i]][1] = f(val1)
         newChromosomes[participants[i + 1]][1] = f(val2)
@@ -128,7 +154,7 @@ for step in range(nrSteps):
         g.write("\nDupa recombinare:\n")
         for i in range(len(newChromosomes)):
             show = "{0:b}".format(newChromosomes[i][0])
-            x = multiplyFactor * newChromosomes[i][0] + a
+            x = multiplyFactor * newChromosomes[i][0] + lowerBound
             g.write(f"{i + 1}: {show.zfill(chromosomeLen)} x= {x} f= {newChromosomes[i][1]}\n")
         g.write(f"\nProbabilitate de mutatie pentru fiecare gena {mutationProbability}\nAu fost modificati cromozomii:\n")
 
@@ -150,7 +176,7 @@ for step in range(nrSteps):
         if x != newX:
             newX = int(newX, base=2)
             newChromosomes[i][0] = newX
-            val1 = newX * multiplyFactor + a
+            val1 = newX * multiplyFactor + lowerBound
             newChromosomes[i][1] = f(val1)
             # newChromosomes[i][2] = f(newChromosomes[i][1])
             if step == 0:
@@ -160,7 +186,7 @@ for step in range(nrSteps):
         g.write("\nDupa mutatie:\n")
         for i in range(len(newChromosomes)):
             show = "{0:b}".format(newChromosomes[i][0])
-            x = multiplyFactor * newChromosomes[i][0] + a
+            x = multiplyFactor * newChromosomes[i][0] + lowerBound
             g.write(f"{i + 1}: {show.zfill(chromosomeLen)} x= {x} f= {newChromosomes[i][1]}\n")
 
     if step == 0:
