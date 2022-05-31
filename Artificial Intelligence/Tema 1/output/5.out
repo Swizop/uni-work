@@ -1,0 +1,90 @@
+__________________
+DRUM SOLUTIE:
+Nod 1
+vv.vv
+>....
+..@..
+>....
+^^.^^
+COST MUTARI: 0  NR. CAPTURED: 0
+
+Nod 2
+.....
+vo.vv
+.@...
+^o.^^
+.....
+COST MUTARI: 11  NR. CAPTURED: 0
+
+Nod 3
+.....
+..>..
+@o.oo
+..>..
+.....
+COST MUTARI: 22  NR. CAPTURED: 2
+
+.....
+.....
+@@@..
+.....
+.....
+
+
+__________________
+DRUM SOLUTIE:
+Nod 1
+vv.vv
+>....
+..@..
+>....
+^^.^^
+COST MUTARI: 0  NR. CAPTURED: 0
+
+Nod 2
+.....
+vo.vv
+.....
+^o@^^
+.....
+COST MUTARI: 11  NR. CAPTURED: 0
+
+Nod 3
+.....
+..>..
+oo.oo
+..>..
+..@..
+COST MUTARI: 22  NR. CAPTURED: 0
+
+Nod 4
+.....
+^^.o^
+.....
+vv.ov
+...@.
+COST MUTARI: 33  NR. CAPTURED: 0
+
+Nod 5
+^^.^^
+....>
+.....
+....>
+vv.v@
+COST MUTARI: 44  NR. CAPTURED: 1
+
+Nod 6
+vv.vv
+....<
+.....
+....@
+^^.^.
+COST MUTARI: 54  NR. CAPTURED: 2
+
+.....
+.....
+..@..
+..@.@
+..@@@
+
+

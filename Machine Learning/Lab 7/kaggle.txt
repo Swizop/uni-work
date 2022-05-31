@@ -1,0 +1,20 @@
+forest -> performante slabe pe validate; incercam sa antrenam si pe alea
+
+
+-> ce este modelul, in limbaj natural
+-> prezentare parametri modelului. k mic overfitting (poate in validation data sunt obiecte ff similare unul cu celalat si avem rezultate bune, dar in test sunt obiecte la care ar fi nevoie de un spectru mai mare) / k mare underfitting (poate sunt mai putine chestii din clasa A si tu iei toate training objects-urile si iti iese B, dar de fapt era A)
+	brute force O[DN^2], KD Tree O[D N logN], Ball Tree O(DlogN)
+-> NB e high bias low variance
+-> text preprocessing (ce e bag of words). folosit scaler
+-> hiperparametrizare
+4-5 teste
+ex k-NN: pt 2 0.7, pt 3 0.5 etc; + distantele
+
+PT CEL MAI BUN MODEL:
+matricea de confuzie
+confusion matrix skit learn
+
+
+COLOCVIU:
+
+distantele trebuiau sortate descrescator (cele mai apropriate erau cele cu functia aia cea mai mare de fapt)

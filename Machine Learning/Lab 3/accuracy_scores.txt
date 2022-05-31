@@ -1,0 +1,5 @@
+Acuratete pt nr vecini cu l1 - 1: 88.0%.Acuratete pt nr vecini cu l2 - 1: 88.4%.
+Acuratete pt nr vecini cu l1 - 3: 88.0%.Acuratete pt nr vecini cu l2 - 3: 89.6%.
+Acuratete pt nr vecini cu l1 - 5: 86.6%.Acuratete pt nr vecini cu l2 - 5: 89.4%.
+Acuratete pt nr vecini cu l1 - 7: 86.6%.Acuratete pt nr vecini cu l2 - 7: 87.6%.
+Acuratete pt nr vecini cu l1 - 9: 86.6%.Acuratete pt nr vecini cu l2 - 9: 87.8%.
