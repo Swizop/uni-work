@@ -71,6 +71,10 @@ solutie(Strada, PosesorZebra) :-
 % X = [h, e ,l, l, o]
 
 :- include('words.pl').
+
+% dac ̆a a doua list ̆a ”acoper ̆a” prima list ̆a (i.e., verific ̆a dac ̆a fiecare element
+% care apare de k ori ˆın prima list ̆a apare de cel put ̧in k ori ˆın a doua list ̆a).
+
 cover([], _).
 cover([H | T], L) :-
 	select(H, L, R),
