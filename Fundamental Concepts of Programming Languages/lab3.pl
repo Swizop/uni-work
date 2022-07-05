@@ -1,3 +1,6 @@
+% ?- unify_with_occurs_check(A, f(A)).
+% false.
+
 %x, y, z, u, v simboluri pt variabile
 %a, b, c constante
 %h, g, (_)^(-1) fct de aritate 1

@@ -1,0 +1,160 @@
+p(a, x, h(g(y))), p(z, h(z), h(u))
+
+SOL			LISTA REZ					OPERATIE
+vid			p(a, x, h(g(y))) = p(z, h(z), h(u))		DESC
+vid			a = z, x = h(z), h(g(y)) = h(u)			DESC
+vid			a = z, x = h(z), g(y) = u			REZOLVA
+z = a			x = h(a), g(y) = u			REZ
+z = a, x = h(a)		g(y) = u			REZ
+z=a,x=h(a),u=g(y)
+unificatorul este: { a/z , h(a) / x, g(y) / u}
+
+
+EX. 2
+
+SOL				REZ					OP
+vid			f(h(a), g(x))=f(y,y)				DESC
+vid			h(a)=y, g(x)=y					REZ
+y=h(a)			g(x)=h(a)					ESEC	
+
+
+EX. 3
+
+SOL					REZ				OP
+vid				p(a, x, g(x)) = p(a, y, y)		DESC
+vid				a=a, x=y, g(x) = y			SCOATE
+vid				x=y, g(x)=y				REZ
+y=x				g(x)=x				ESEC
+
+
+EX. 4
+SOLL					REZ				OP
+vid				p(x,y,z)=p(u, f(v,v), u)		DESC
+vid				x=u, y=f(v,v), z=u			REZ
+u=x				y=f(v, v), z=x				REZ
+u=x, z=x			y=f(v,v)				REZ
+u=x, z=x, y=f(v,v)
+
+EX. 5
+
+SOL						REZ			OP
+				f(x, f(x, x))=f(g(y), f(z, g(a)))	desc
+vid				x=g(y), f(x, x) = f(z, g(a))		DESC
+vid				x=g(y), x=z, x=g(a)			REZ
+x=g(y)				g(y)=z, g(y)=g(a)			DESC
+x=g(y)				g(y)=z, y=a				REZ
+x=g(y), y=a			g(a)=z				REZ
+x=g(y), y=a, z=g(a)
+
+
+EX. 25
+
+SOL						REZ				OP
+			p(f(x,a),g(y),z)=p(f(a,a),z,u), p(f(a,a),z,u)=p(v,u,z)	DESC
+			f(x,a)=f(a,a), g(y)=z, z=u, f(a,a)=v, z=u, u=z		REZ
+v=f(a,a)		f(x,a)=v, g(y)=z, z=u					REZ
+v=f(a,a), z=u			f(x,a)=v, g(y) = u				REZ
+v=f(a,a), z=u, u=g(y)		f(x,a)=f(a,a)					DESC
+				x=a, a=a					SCOATE
+				x=a						REZ
+x=a
+
+a/x, f(a,a)/v, u/z, g(y)/u
+
+
+
+
+
+_______________________ LOGICA
+
+I.
+(p ∧ q) ∧ r, s ∧ t ⊢ q ∧ s
+
+1. (p^q)^r
+2. s^t
+3. p^q (^e1 pentru 1)
+4. q (^e2 pe 3)
+5. s (^e1 pe 2)
+6. q^s (^i pt 4, 5)
+
+
+II.
+p, ¬¬(q ∧ r) ⊢ ¬¬p ∧ r
+
+1. p
+2. \\(q^r)
+3. \\p (\\i pe 1)
+4. q ^ r (\\e pe 2)
+5. r (^e2 pe 3)
+6. \\p ^ r
+
+
+
+
+________ SLD-respingere
+
+a)
+1. !p V !q V r
+2. !p V !q V s
+3. !t V !u V v
+4. !v V !s V w
+5. t
+6. q
+7. u
+8. p
+9. !w
+10. aplic 4
+	!v V !s
+11. aplic 3
+	!t V !u 
+12. aplic 5
+	!u
+13. aplic 7
+	box
+
+
+
+b)
+1. q(X, Y) V !q(Y, X) V !q(Y, f(f(Y)))
+2. q(a, f(f(X)))
+3. !q(f(Z), a)
+4. aplic 1 cu T(X) = f(Z) si T(Y) = a
+	!q(a, f(Z)) V !q(a, f(f(a)))
+5. aplic 2 cu T(X) = a
+	!q(a, f(Z))
+3. aplic 2 cu T(f(X)) = Z
+	box
+
+c)
+1. p(X) V !q(X, f(Y)) V !r(a)
+2. p(X) V !r(X)
+3. q(X, Y) V !p(Y)
+4. r(X) V !q(X, Y1)
+5. r(f(b))
+6. !p(X) V !q(Y, Z)
+7. aplic 2
+	!r(X) V !q(Y, Z)
+8. aplic 5 cu O(X) = f(b)
+	!q(Y, Z)
+9. aplic 4 cu O(X) = Y, O(Y1) = Z
+	r(Y)
+10. aplic 5 cu O(Y) = f(b)
+	box
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+				

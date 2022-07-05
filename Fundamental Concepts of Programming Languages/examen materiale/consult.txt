@@ -1,0 +1,4 @@
+semantica operationala / semantica deoperationala.
+BNF (verificare posibil in prolog)
+
+semantica denotationala => haskell

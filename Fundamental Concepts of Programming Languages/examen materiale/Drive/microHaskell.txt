@@ -1,0 +1,91 @@
+import Data.List
+import Data.Maybe
+
+type Name = String
+
+data Value = VBool Bool
+    | VInt Int
+    | VFun (Value -> Value)
+    | VError
+
+data Hask = HTrue --
+    | HFalse --
+    | HIf Hask Hask Hask --
+    | HLit Int --
+    | HLet Name Hask Hask -- 
+    | Hask :==: Hask --
+    | Hask :+:  Hask -- 
+    | Hask :*: Hask -- tema 
+    | HVar Name -- 
+    | HLam Name Hask --
+    | Hask :$: Hask
+    deriving (Show)
+
+infix 4 :==:
+infixl 6 :+:
+--infixl 6 :-:
+infixl 7 :*: 
+infixl 9 :$:
+
+type HEnv = [(Name, Value)]
+
+showV :: Value -> String
+showV (VBool b) = show b
+showV (VInt i) = show i
+showV (VFun _) = "<function>"
+showV (VError) = "<error>"
+
+instance Show Value where 
+    show = showV 
+
+eqV :: Value -> Value -> Bool
+eqV (VBool b) (VBool c) =  b == c
+eqV (VInt i) (VInt j) =  i == j
+eqV _ _ = False
+
+instance Eq Value where 
+    (==) = eqV 
+
+hEval :: Hask -> HEnv -> Value
+hEval HTrue _ = VBool True
+hEval HFalse _ = VBool False 
+hEval (HLit x) _ = VInt x 
+hEval (HIf cond sttrue stfalse) env = hif (hEval cond env) (hEval sttrue env) (hEval stfalse env)
+    where 
+        hif (VBool b) st1 st2 = if b then st1 else st2 
+        hif _ _ _ = VError 
+hEval (HLet x valexpr expr) env = hEval expr ((x, hEval valexpr env) : env)
+hEval (exp1 :=: exp2) env = VBool $ (hEval exp1 env) == (hEval exp2 env)
+hEval (exp1 :+: exp2) env = hadd (hEval exp1 env) (hEval exp2 env)
+    where 
+        hadd (VInt i) (VInt j) = VInt $ i + j 
+        hadd _ _ = VError 
+hEval (HVar x) env = fromMaybe VError $ lookup x env 
+hEval (HLam x expr) env = VFun (\v -> hEval expr ((x, v) : env))
+hEval (f :$: g) env = happ (hEval f env) (hEval g env)
+    where 
+        happ (VFun f) v = f v 
+        happ _ _ = VError 
+
+-- \x -> expr 
+-- let x = y + 1 in 2 * x
+
+-- env = [("myVar", VInt 27), ("x", VBool False), ("z", VInt 7)] 
+-- x -> VBool False 
+-- myVar -> VInt 27
+-- isActive -> VError 
+
+run :: Hask -> String
+run pg = showV (hEval pg [])
+
+h0 =  (HLam "x" (HLam "y" ((HVar "x") :+: (HVar "y")))) :$: (HLit 3) :$: (HLit 4)
+
+-- Tema (pana maine seara - 14.05.2022 23:59)
+-- 1. adaugati semantica denotationala pentru :*: 
+-- 2. evaluati programul h0 si scrieti echivalentul lui in Haskell 
+-- 3. adaugati inca 4 exemple de expresii Hask si evaluati-le. Expresiile trebuie sa fie complexe si sa utilizeze toate definitiile 
+-- 4. modificati, pentru fiecare caz in parte, return-ul VError intr-un mesaj de eroare specific, utilizand functia error din Haskell 
+-- 5. modificati signatura functiei hEval in hEval :: Hask -> HEnv -> Maybe Value. Returneaza Just cand se poate evalua, si Nothing in caz de eroare.
+
+
+-- laboratorul se noteaza pentru punctajul suplimentar 
